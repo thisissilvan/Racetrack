@@ -1,7 +1,7 @@
 package ch.zhaw.pm2.racetrack;
 
-import ch.zhaw.pm2.racetrack.solution.Car;
-import ch.zhaw.pm2.racetrack.solution.InvalidTrackFormatException;
+import ch.zhaw.pm2.racetrack.Car;
+import ch.zhaw.pm2.racetrack.exception.InvalidTrackFormatException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
