@@ -33,7 +33,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'ch.zhaw.pm2.einhoerner.ner.racetrack.App'
+    mainClassName = 'ch.zhaw.pm2.racetrack.App'
 }
 
 test {
