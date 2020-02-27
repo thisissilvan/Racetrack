@@ -57,7 +57,7 @@ public class Game {
      * @return A PositionVector containing the car's current velocity
      */
     public PositionVector getCarVelocity(int carIndex) {
-        // todo
+        track.getCarVelocity(carIndex);
         return null;
     }
 
