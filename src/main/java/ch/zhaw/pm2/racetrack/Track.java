@@ -72,4 +72,6 @@ public class Track {
         return 0;
     }
 
+    public PositionVector getCarPos(int id){ return null; }
+
 }
