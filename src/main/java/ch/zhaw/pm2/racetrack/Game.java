@@ -11,7 +11,8 @@ import static ch.zhaw.pm2.racetrack.PositionVector.*;
  */
 public class Game {
     public static final int NO_WINNER = -1;
-
+    private int currentCar;
+    private Track track;
 
 
     /**
