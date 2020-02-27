@@ -29,8 +29,7 @@ public class Game {
      * @return The zero-based number of the current car
      */
     public int getCurrentCarIndex() {
-        // todo
-        return 0;
+        return currentCar;
     }
 
     /**
