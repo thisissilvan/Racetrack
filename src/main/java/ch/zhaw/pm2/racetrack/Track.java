@@ -77,4 +77,12 @@ public class Track {
     public PositionVector getCarVelocity(int id){
         return null;
     }
+
+    public List <Car> getCars(){
+        return null;
+    }
+
+    public int getCarCount(){
+        return 0;
+    }
 }

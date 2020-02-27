@@ -10,4 +10,7 @@ package ch.zhaw.pm2.racetrack;
  */
 public class Car {
 
+    public boolean isCrashed (){
+        return false;
+    }
 }

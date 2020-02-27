@@ -104,7 +104,11 @@ public class Game {
      * Switches to the next car who is still in the game. Skips crashed cars.
      */
     public void switchToNextActiveCar() {
-
+        int nextCar;
+        do {
+            nextCar = (currentCar + 1) % track.getCarCount();
+        } while (track.getCars().get(nextCar).isCrashed());
+        currentCar = nextCar;
     }
 
 
