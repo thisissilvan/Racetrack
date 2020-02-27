@@ -16,6 +16,14 @@ public class Game {
 
 
     /**
+     * Game controller class, receives a track when initialised.
+     * @param track which is used for the game
+     */
+    public Game (Track track){
+        this.track = track;
+    }
+
+    /**
      * Return the index of the current active car.
      * Car indexes are zero-based, so the first car is 0, and the last car is getCarCount() - 1.
      * @return The zero-based number of the current car
