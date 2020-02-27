@@ -68,4 +68,8 @@ public class Track {
         // todo
     }
 
+    public char getCarId(int id){
+        return 0;
+    }
+
 }

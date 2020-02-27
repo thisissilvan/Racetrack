@@ -38,8 +38,7 @@ public class Game {
      * @return A char containing the id of the car
      */
     public char getCarId(int carIndex) {
-        // todo
-        return ' ';
+        return track.getCarId(carIndex);
     }
 
     /**
