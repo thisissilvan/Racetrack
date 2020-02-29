@@ -56,6 +56,11 @@ import java.util.*;
 public class Track {
 
 
+    private Config.SpaceType[][] grid;
+    private int width;
+    private int height;
+    private List<Car> cars;
+
     /**
      * Initialize a Track from the given track file.
      *
@@ -66,6 +71,30 @@ public class Track {
     public Track(File trackFile) throws FileNotFoundException//, InvalidTrackFormatException
     {
         // todo
+    }
+
+    public Config.SpaceType getSpaceType(PositionVector) {
+        return null; // has to be implemented
+    }
+
+    public int getCarCount() {
+        return 0; // has to be implemented
+    }
+
+    public char getCarId(int carNr) {
+        return 0; // has to be implemented
+    }
+
+    public PositionVector getCarPosition(int carNr) {
+        return null; // has to be implemented
+    }
+
+    public PositionVector getCarVelocity(int carNr) {
+        return null; // has to be implemented
+    }
+
+    public String toString() {
+        return null; // has to be implemented
     }
 
 }
