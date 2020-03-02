@@ -54,7 +54,8 @@ import java.util.*;
  * <p>The Track can return a String representing the current state of the race (including car positons)</p>
  */
 public class Track {
-     private List<Car> car = new ArrayList<>();
+    private List<Car> car = new ArrayList<>();
+    private Config config;
 
     /**
      * Initialize a Track from the given track file.
@@ -68,12 +69,9 @@ public class Track {
         // todo
     }
 
-    public enum SpaceType {
 
-    }
-
-    public SpaceType getSpaceType(PositionVector position){
-        return null;
+    public char getSpaceType(PositionVector position){
+        return 'c'; //TODO: noch zu implementieren
     }
 
     public int getCarCount(){

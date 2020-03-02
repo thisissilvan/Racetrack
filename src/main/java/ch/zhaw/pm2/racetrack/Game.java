@@ -136,6 +136,10 @@ public class Game {
         return new ArrayList<PositionVector>();
     }
 
+    private boolean collisionWithOtherCars(){
+        return false;
+    }
+
     /**
      * Does indicate if a car would have a crash with a WALL space or another car at the given position.
      * @param carIndex The zero-based carIndex number
@@ -143,9 +147,7 @@ public class Game {
      * @return A boolean indicator if the car would crash with a WALL or another car.
      */
     public boolean willCarCrash(int carIndex, PositionVector position) {
-        if(track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)))
-        return false;
-
+        return (track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)) == ('#') || collisionWithOtherCars());
     }
 
 
