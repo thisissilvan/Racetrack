@@ -9,5 +9,11 @@ package ch.zhaw.pm2.racetrack;
  * The car is able to calculate the endpoint of its next position and on request moves to it.
  */
 public class Car {
+    private char id;
+    private PositionVector position;
+    private PositionVector velocity;
+    private boolean isCrashed;
+
+    
 
 }
