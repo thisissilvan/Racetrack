@@ -137,6 +137,7 @@ public class Game {
     }
 
     private boolean collisionWithOtherCars(){
+
         return false;
     }
 
