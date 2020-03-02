@@ -16,6 +16,13 @@ public class Car {
     private PositionVector velocity;
     private boolean isCrashed;
 
+    /**
+     * Car Constructor.
+     * @param id        the id of the car.
+     * @param position  a PositionVector that shows the position of the car on the track.
+     * @param velocity  the velocity as PositionVector, with the position and velocity the next turn can be calculated.
+     * @param isCrashed a boolean that shows if a car is crashed into another car or into the wall of the track.
+     */
     public Car(char id, PositionVector position, PositionVector velocity, boolean isCrashed) {
         this.id = id;
         this.position = position;
@@ -36,10 +43,18 @@ public class Car {
         return velocity;
     }
 
+    /**
+     * This method calculates the nextPosition. While someone gives two PositionVectors, one for the position and one
+     * for the velocity, this method returns the nextPosition which gets calculated in the PositionVector class.
+     * @return  the next position where the car goes after passing in the position and the velocity PositionVector.
+     */
     public PositionVector nextPosition(){
         return PositionVector.add(position, velocity);
     }
 
+    /**
+     * This method simply moves a car to the next position while calling the nextPosition() method.
+     */
     public void move(){
         position = nextPosition();
     }
@@ -47,10 +62,19 @@ public class Car {
     public void crash(){
     }
 
+    /**
+     * The method accelerate calculates the velocity. It takes the direction as a parameter.
+     * @param direction the direction
+     */
     public void accelerate(Direction direction){
         velocity = PositionVector.add(direction.vector, velocity);
     }
 
+    /**
+     * Method shows if a car is crashed or not. A car can crash when driving in or over another vehicle or driving into
+     * the walls.
+     * @return a boolean value that shows if the car is crashed.
+     */
     public boolean isCrashed(){
         return false;
     }
