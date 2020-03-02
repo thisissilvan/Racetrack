@@ -15,14 +15,6 @@ public class Car {
     private boolean isCrashed;
 
 
-    public boolean isCrashed (){
-        return false;
-    }
-
-    public void setIsCrashed() {
-        isCrashed = true;
-    }
-
     public char getId () { return id; }
 
     public PositionVector getPosition () { return position; }
@@ -35,5 +27,13 @@ public class Car {
 
     public void setVelocity (PositionVector newVelocity) {
         velocity = newVelocity;
+    }
+
+    public boolean isCrashed (){
+        return false;
+    }
+
+    public void setIsCrashed() {
+        isCrashed = true;
     }
 }

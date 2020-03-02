@@ -86,6 +86,10 @@ public class Track {
         car.get(id).setVelocity(newVelocity);
     }
 
+    public void setIsCrashed(int id) {
+        car.get(id).setIsCrashed();
+    }
+
     public List <Car> getCars(){
         return null;
     }
