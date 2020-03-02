@@ -74,7 +74,9 @@ public class Track {
 
     public PositionVector getCarPos(int id){ return null; }
 
-    public PositionVector setCarPos(int id, PositionVector newPosition){ return null; }
+    public void setCarPos(int id, PositionVector newPosition){
+        car.setPosition(newPosition);
+    }
 
     public PositionVector getCarVelocity(int id){
         return null;
