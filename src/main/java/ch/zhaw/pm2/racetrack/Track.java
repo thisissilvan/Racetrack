@@ -54,7 +54,7 @@ import java.util.*;
  * <p>The Track can return a String representing the current state of the race (including car positons)</p>
  */
 public class Track {
-
+    Car car;
 
     /**
      * Initialize a Track from the given track file.
@@ -74,13 +74,13 @@ public class Track {
 
     public PositionVector getCarPos(int id){ return null; }
 
-    public PositionVector setCarPos(int id){ return null; }
+    public PositionVector setCarPos(int id, PositionVector newPosition){ return null; }
 
     public PositionVector getCarVelocity(int id){
         return null;
     }
 
-    public PositionVector setCarVelocity(int id) { return null; }
+    public PositionVector setCarVelocity(int id, PositionVector newVelocity) { return null; }
 
     public List <Car> getCars(){
         return null;
