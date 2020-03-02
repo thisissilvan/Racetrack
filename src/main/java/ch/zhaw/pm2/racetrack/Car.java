@@ -1,5 +1,6 @@
 package ch.zhaw.pm2.racetrack;
 
+
 /**
  * Class representing a car on the racetrack.
  * Uses {@link PositionVector} to store current position on the track grid and current velocity vector.
@@ -14,6 +15,12 @@ public class Car {
     private PositionVector velocity;
     private boolean isCrashed;
 
-    
+    public Car(char id, PositionVector position, PositionVector velocity, boolean isCrashed) {
+        this.id = id;
+        this.position = position;
+        this.velocity = velocity;
+        this.isCrashed = isCrashed;
+    }
 
+    
 }
