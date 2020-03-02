@@ -82,7 +82,9 @@ public class Track {
         return null;
     }
 
-    public PositionVector setCarVelocity(int id, PositionVector newVelocity) { return null; }
+    public void setCarVelocity(int id, PositionVector newVelocity) {
+        car.setVelocity(newVelocity);
+    }
 
     public List <Car> getCars(){
         return null;
