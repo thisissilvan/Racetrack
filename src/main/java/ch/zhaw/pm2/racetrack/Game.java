@@ -98,11 +98,11 @@ public class Game {
     public void doCarTurn(Direction acceleration) {
         PositionVector newVelocity = positionVector.add(getCarVelocity(getCurrentCarIndex()), acceleration.vector);
         PositionVector newPosition = positionVector.add(getCarPosition(getCurrentCarIndex()), newVelocity);
-        if (!willCarCrash(getCurrentCarIndex(), newPosition)) {
+        if (!willCarCrash(getCurrentCarIndex(), newPosition)) { // TODO: Check if game is won
             track.setCarPos(getCurrentCarIndex(), newPosition);
             track.setCarVelocity(getCurrentCarIndex(), newVelocity);
         } else {
-
+            track.setCarIsCrashed(getCurrentCarIndex());
         }
     }
 

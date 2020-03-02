@@ -86,7 +86,7 @@ public class Track {
         car.get(id).setVelocity(newVelocity);
     }
 
-    public void setIsCrashed(int id) {
+    public void setCarIsCrashed(int id) {
         car.get(id).setIsCrashed();
     }
 
