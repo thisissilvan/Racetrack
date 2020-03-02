@@ -54,7 +54,7 @@ import java.util.*;
  * <p>The Track can return a String representing the current state of the race (including car positons)</p>
  */
 public class Track {
-    Car car;
+     private List<Car> car = new ArrayList<>();
 
     /**
      * Initialize a Track from the given track file.
@@ -75,7 +75,7 @@ public class Track {
     public PositionVector getCarPos(int id){ return null; }
 
     public void setCarPos(int id, PositionVector newPosition){
-        car.setPosition(newPosition);
+        car.get(id).setPosition(newPosition);
     }
 
     public PositionVector getCarVelocity(int id){
@@ -83,7 +83,7 @@ public class Track {
     }
 
     public void setCarVelocity(int id, PositionVector newVelocity) {
-        car.setVelocity(newVelocity);
+        car.get(id).setVelocity(newVelocity);
     }
 
     public List <Car> getCars(){

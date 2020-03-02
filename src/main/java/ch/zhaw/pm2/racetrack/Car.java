@@ -14,8 +14,13 @@ public class Car {
     private PositionVector velocity;
     private boolean isCrashed;
 
+
     public boolean isCrashed (){
         return false;
+    }
+
+    public void setIsCrashed() {
+        isCrashed = true;
     }
 
     public char getId () { return id; }

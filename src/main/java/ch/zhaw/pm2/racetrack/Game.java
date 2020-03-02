@@ -99,7 +99,10 @@ public class Game {
         PositionVector newVelocity = positionVector.add(getCarVelocity(getCurrentCarIndex()), acceleration.vector);
         PositionVector newPosition = positionVector.add(getCarPosition(getCurrentCarIndex()), newVelocity);
         if (!willCarCrash(getCurrentCarIndex(), newPosition)) {
-            track.car.
+            track.setCarPos(getCurrentCarIndex(), newPosition);
+            track.setCarVelocity(getCurrentCarIndex(), newVelocity);
+        } else {
+
         }
     }
 
