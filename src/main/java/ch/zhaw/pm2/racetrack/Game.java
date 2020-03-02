@@ -143,8 +143,9 @@ public class Game {
      * @return A boolean indicator if the car would crash with a WALL or another car.
      */
     public boolean willCarCrash(int carIndex, PositionVector position) {
-        // todo
+        if(track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)))
         return false;
+
     }
 
 

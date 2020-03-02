@@ -68,6 +68,18 @@ public class Track {
         // todo
     }
 
+    public enum SpaceType {
+
+    }
+
+    public SpaceType getSpaceType(PositionVector position){
+        return null;
+    }
+
+    public int getCarCount(){
+        return 0;
+    }
+
     public char getCarId(int id){
         return 0;
     }
@@ -94,7 +106,4 @@ public class Track {
         return null;
     }
 
-    public int getCarCount(){
-        return 0;
-    }
 }
