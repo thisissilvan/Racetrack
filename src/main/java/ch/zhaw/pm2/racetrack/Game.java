@@ -13,7 +13,8 @@ public class Game {
     public static final int NO_WINNER = -1;
     private int currentCar;
     private Track track;
-
+    private PositionVector positionVector;
+    //private Direction direction;
 
     /**
      * Game controller class, receives a track when initialised.
@@ -95,7 +96,11 @@ public class Game {
      *                     for this turn
      */
     public void doCarTurn(Direction acceleration) {
-
+        PositionVector newVelocity = positionVector.add(getCarVelocity(getCurrentCarIndex()), acceleration.vector);
+        PositionVector newPosition = positionVector.add(getCarPosition(getCurrentCarIndex()), newVelocity);
+        if (!willCarCrash(getCurrentCarIndex(), newPosition)) {
+            track.car.nex
+        }
     }
 
     /**
