@@ -1,5 +1,6 @@
 package ch.zhaw.pm2.racetrack;
 
+import ch.zhaw.pm2.racetrack.PositionVector.Direction;
 
 /**
  * Class representing a car on the racetrack.
@@ -20,7 +21,39 @@ public class Car {
         this.position = position;
         this.velocity = velocity;
         this.isCrashed = isCrashed;
+        isCrashed = false;
     }
 
-    
+    public char getId() {
+        return id;
+    }
+
+    public PositionVector getPosition() {
+        return position;
+    }
+
+    public PositionVector getVelocity() {
+        return velocity;
+    }
+
+    public PositionVector nextPosition(){
+        return PositionVector.add(position, velocity);
+    }
+
+    public void move(){
+        position = nextPosition();
+    }
+
+    public void crash(){
+    }
+
+    public void accelerate(Direction direction){
+        velocity = PositionVector.add(direction.vector, velocity);
+    }
+
+    public boolean isCrashed(){
+        return false;
+    }
+
+
 }
