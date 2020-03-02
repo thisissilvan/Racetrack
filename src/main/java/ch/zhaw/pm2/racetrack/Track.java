@@ -80,6 +80,8 @@ public class Track {
         return null;
     }
 
+    public PositionVector setCarVelocity(int id) { return null; }
+
     public List <Car> getCars(){
         return null;
     }
