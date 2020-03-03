@@ -1,6 +1,5 @@
 package ch.zhaw.pm2.racetrack;
 
-import ch.zhaw.pm2.racetrack.Car;
 import ch.zhaw.pm2.racetrack.exception.InvalidTrackFormatException;
 
 import java.io.File;
@@ -15,7 +14,7 @@ import java.util.*;
  * <p>Positions on the track grid are specified using {@link PositionVector} objects. These are vectors containing an
  * x/y coordinate pair, pointing from the zero-point (top-left) to the addressed space in the grid.</p>
  *
- * <p>Each position in the grid represents a space which can hold an enum object of type {@link SpaceType}.<br>
+ * <p>Each position in the grid represents a space which can hold an enum object of type {@link Config.SpaceType}.<br>
  * Possible Space types are:
  * <ul>
  *  <li>WALL : road boundary or off track space</li>
@@ -73,7 +72,7 @@ public class Track {
         // todo
     }
 
-    public Config.SpaceType getSpaceType(PositionVector) {
+    public Config.SpaceType getSpaceType(PositionVector $position) {
         return null; // has to be implemented
     }
 
@@ -91,6 +90,38 @@ public class Track {
 
     public PositionVector getCarVelocity(int carNr) {
         return null; // has to be implemented
+    }
+
+    public Config.SpaceType[][] getGrid() {
+        return grid;
+    }
+
+    public void setGrid(Config.SpaceType[][] grid) {
+        this.grid = grid;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public List<ch.zhaw.pm2.racetrack.Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<ch.zhaw.pm2.racetrack.Car> cars) {
+        this.cars = cars;
     }
 
     public String toString() {
