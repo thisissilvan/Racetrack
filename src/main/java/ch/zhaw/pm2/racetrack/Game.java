@@ -69,16 +69,6 @@ public class Game {
         return 0;
     }
 
-    public PositionVector newVelocity(Direction acceleration){
-        PositionVector velocity = getCarVelocity(getCurrentCarIndex());
-        velocity.accelerate
-
-        return velocity;
-    }
-
-    public PositionVector newPosition(Direction acceleration){
-        return positionVector.add(getCarPosition(getCurrentCarIndex()), newVelocity(acceleration));
-    }
     /**
      * Execute the next turn for the current active car.
      * <p>This method changes the current car's velocity and checks on the path to the next position,
@@ -105,12 +95,20 @@ public class Game {
      * @param acceleration A Direction containing the current cars acceleration vector (-1,0,1) in x and y direction
      *                     for this turn
      */
-    public void doCarTurn(Direction acceleration) {
-        if (!willCarCrash(getCurrentCarIndex(), newPosition(acceleration))) { // TODO: Check if game is won
-            track.setCarPos(getCurrentCarIndex(), newPosition(acceleration));
-            track.setCarVelocity(getCurrentCarIndex(), acceleration);
-        } else {
+    //posToBeChecked = pos + (v + a)
+    public PositionVector posToBeChecked(Direction acceleration){
+        return positionVector.add(getCarPosition(getCurrentCarIndex()), positionVector.add(getCarVelocity(getCurrentCarIndex()), acceleration.vector));
+    }
+
+    public void doCarTurn(Direction acceleration){
+        if(willCarCrash(getCurrentCarIndex(), posToBeChecked(acceleration))){
             track.setCarIsCrashed(getCurrentCarIndex());
+            //TODO:check if only one car remaining -> winner car
+        }
+        //TODO: else if (carWins) { }
+        else{
+            track.getCars().get(getCurrentCarIndex()).accelerate(acceleration); //velocity update
+            track.getCars().get(getCurrentCarIndex()).move(); //pos update
         }
     }
 
@@ -146,10 +144,6 @@ public class Game {
     }
 
     private boolean collisionWithOtherCars(int id, PositionVector position){
-
-
-
-
         return false;
     }
 

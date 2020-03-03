@@ -84,20 +84,9 @@ public class Track {
 
     public PositionVector getCarPos(int id){ return null; }
 
-    public void setCarPos(int id, PositionVector.Direction acceleration){
-        setCarVelocity(id, acceleration);
-        cars.get(id).move();
-    }
-
     public PositionVector getCarVelocity(int id){
         return null;
     }
-
-    public void setCarVelocity(int id, PositionVector.Direction acceleration) {
-        cars.get(id).accelerate(acceleration);
-    }
-
-
 
     public void setCarIsCrashed(int id) {
         cars.get(id).crash();
