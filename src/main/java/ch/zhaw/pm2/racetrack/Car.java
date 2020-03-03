@@ -85,6 +85,14 @@ public class Car {
         velocity = PositionVector.add(direction.vector, velocity);
     }
 
-   
+    /**
+     * Method shows if a car is crashed or not. A car can crash when driving in or over another vehicle or driving into
+     * the walls.
+     * @return a boolean value that shows if the car is crashed.
+     */
+    public boolean isCrashed(){
+        return isCrashed;
+    }
+
 
 }
