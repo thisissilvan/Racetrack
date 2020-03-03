@@ -70,7 +70,8 @@ public class Game {
     }
 
     public PositionVector newVelocity(Direction acceleration){
-        PositionVector velocity = getCarVelocity(getCurrentCarIndex()).track.getCars().get(getCurrentCarIndex()).accelerate(acceleration);
+        PositionVector velocity = getCarVelocity(getCurrentCarIndex());
+        velocity.accelerate
 
         return velocity;
     }
@@ -147,7 +148,7 @@ public class Game {
     private boolean collisionWithOtherCars(int id, PositionVector position){
 
 
-        }
+
 
         return false;
     }

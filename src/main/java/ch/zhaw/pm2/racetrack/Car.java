@@ -48,10 +48,6 @@ public class Car {
         return velocity;
     }
 
-    public void setVelocity (PositionVector newVelocity) {
-        velocity = newVelocity;
-    }
-
     /**
      * This method calculates the nextPosition. While someone gives two PositionVectors, one for the position and one
      * for the velocity, this method returns the nextPosition which gets calculated in the PositionVector class.
