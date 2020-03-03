@@ -112,6 +112,11 @@ public class Game {
         }
     }
 
+    //todo
+    public boolean gameIsWon(){
+        return true;
+    }
+
     /**
      * Switches to the next car who is still in the game. Skips crashed cars.
      */
@@ -155,7 +160,7 @@ public class Game {
      */
     public boolean willCarCrash(int carIndex, PositionVector position) {
         return (track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)) == ('#') || collisionWithOtherCars(carIndex, position));
-        //Todo: how can I use enum
+        //Todo: how can I use enum WALL
     }
 
 
