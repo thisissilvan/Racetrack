@@ -162,7 +162,15 @@ public class Game {
     }
 
     private boolean collisionWithOtherCars(int id, PositionVector position){
-        return false;
+        List<PositionVector> pathList = new ArrayList<>();
+        pathList = calculatePath(getCarPosition(id), position);
+        boolean collision = false;
+        for (int i = 0; i < track.getCars().size(); i++) {
+            if (pathList.contains(track.getCarPos(i))){
+                collision = true;
+            }
+        }
+        return collision;
     }
 
     /**
