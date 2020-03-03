@@ -16,20 +16,20 @@ public class Car {
     private PositionVector position;
     private PositionVector velocity;
     private boolean isCrashed;
+    private Game game;
 
     /**
      * Car Constructor.
      * @param id        the id of the car.
      * @param position  a PositionVector that shows the position of the car on the track.
      * @param velocity  the velocity as PositionVector, with the position and velocity the next turn can be calculated.
-     * @param isCrashed a boolean that shows if a car is crashed into another car or into the wall of the track.
      */
-    public Car(char id, PositionVector position, PositionVector velocity, boolean isCrashed) {
+    public Car(char id, PositionVector position, PositionVector velocity) {
         this.id = id;
         this.position = position;
         this.velocity = velocity;
-        this.isCrashed = isCrashed;
-        isCrashed = false;
+        this.isCrashed = false;
+        game = new Game();
     }
 
     public char getId() {
@@ -59,13 +59,22 @@ public class Car {
      * @throws CarIsCrashedException     an unchecked Exception that tells if a car is crashed and can not do the move.
      */
     public void move(){
-        if (isCrashed()){
+        if (isCrashed){
             throw new CarIsCrashedException("Can not move car. Car is crashed.");
         }
         position = nextPosition();
     }
 
+    /**
+     * Method change the state of the isCrashed boolean to true. This can happen when:
+     *  - After a move() from one player  the car holds on the field where another car stands
+     *  - While the move gets calculated, a car will drive over another car
+     *  - The actual turn will end in the wall
+     */
     public void crash(){
+        if (game.willCarCrash(id, position)) {
+            isCrashed = true;
+        }
     }
 
     /**
@@ -76,14 +85,6 @@ public class Car {
         velocity = PositionVector.add(direction.vector, velocity);
     }
 
-    /**
-     * Method shows if a car is crashed or not. A car can crash when driving in or over another vehicle or driving into
-     * the walls.
-     * @return a boolean value that shows if the car is crashed.
-     */
-    public boolean isCrashed(){
-        return false;
-    }
-
+   
 
 }
