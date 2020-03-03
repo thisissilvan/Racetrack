@@ -69,6 +69,15 @@ public class Game {
         return 0;
     }
 
+    public PositionVector newVelocity(Direction acceleration){
+        PositionVector velocity = getCarVelocity(getCurrentCarIndex()).track.getCars().get(getCurrentCarIndex()).accelerate(acceleration);
+
+        return velocity;
+    }
+
+    public PositionVector newPosition(Direction acceleration){
+        return positionVector.add(getCarPosition(getCurrentCarIndex()), newVelocity(acceleration));
+    }
     /**
      * Execute the next turn for the current active car.
      * <p>This method changes the current car's velocity and checks on the path to the next position,
@@ -96,11 +105,9 @@ public class Game {
      *                     for this turn
      */
     public void doCarTurn(Direction acceleration) {
-        PositionVector newVelocity = positionVector.add(getCarVelocity(getCurrentCarIndex()), acceleration.vector);
-        PositionVector newPosition = positionVector.add(getCarPosition(getCurrentCarIndex()), newVelocity);
-        if (!willCarCrash(getCurrentCarIndex(), newPosition)) { // TODO: Check if game is won
-            track.setCarPos(getCurrentCarIndex(), newPosition);
-            track.setCarVelocity(getCurrentCarIndex(), newVelocity);
+        if (!willCarCrash(getCurrentCarIndex(), newPosition(acceleration))) { // TODO: Check if game is won
+            track.setCarPos(getCurrentCarIndex(), newPosition(acceleration));
+            track.setCarVelocity(getCurrentCarIndex(), acceleration);
         } else {
             track.setCarIsCrashed(getCurrentCarIndex());
         }
@@ -132,11 +139,15 @@ public class Game {
      */
     public List<PositionVector> calculatePath(PositionVector startPosition, PositionVector endPosition) {
         // todo
+        List<PositionVector> pathList = new ArrayList<>();
 
-        return new ArrayList<PositionVector>();
+        return pathList;
     }
 
-    private boolean collisionWithOtherCars(){
+    private boolean collisionWithOtherCars(int id, PositionVector position){
+
+
+        }
 
         return false;
     }
@@ -148,7 +159,8 @@ public class Game {
      * @return A boolean indicator if the car would crash with a WALL or another car.
      */
     public boolean willCarCrash(int carIndex, PositionVector position) {
-        return (track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)) == ('#') || collisionWithOtherCars());
+        return (track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)) == ('#') || collisionWithOtherCars(carIndex, position));
+        //Todo: how can I use enum
     }
 
 

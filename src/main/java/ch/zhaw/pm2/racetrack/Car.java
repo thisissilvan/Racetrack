@@ -29,7 +29,7 @@ public class Car {
         this.position = position;
         this.velocity = velocity;
         this.isCrashed = false;
-        game = new Game();
+        //game = new Game();
     }
 
     public char getId() {
@@ -102,8 +102,5 @@ public class Car {
         return isCrashed;
     }
 
-    public void setIsCrashed() {
-        isCrashed = true;
-    }
 
 }
