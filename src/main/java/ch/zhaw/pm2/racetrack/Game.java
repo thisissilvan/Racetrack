@@ -142,9 +142,22 @@ public class Game {
      * @return Intervening grid positions as a List of PositionVector's, including the starting and ending positions.
      */
     public List<PositionVector> calculatePath(PositionVector startPosition, PositionVector endPosition) {
-        // todo
         List<PositionVector> pathList = new ArrayList<>();
+        int x1 = startPosition.getX();
+        int y1 = startPosition.getY();
+        int x2 = endPosition.getX();
+        int y2 = endPosition.getY();
+        int newSlope = 2*(y2-y1);
+        int newSlopeError = newSlope - (x2-x1);
 
+        for (int x = x1, y = y1; x <= x2; x++) {
+            pathList.add(new PositionVector(x, y));
+            newSlopeError += newSlope;
+            if (newSlopeError >= 0) {
+                y++;
+                newSlopeError -= 2*(x2-x1);
+            }
+        }
         return pathList;
     }
 
