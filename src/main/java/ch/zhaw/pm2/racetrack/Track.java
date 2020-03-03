@@ -2,8 +2,12 @@ package ch.zhaw.pm2.racetrack;
 
 import ch.zhaw.pm2.racetrack.exception.InvalidTrackFormatException;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -55,8 +59,8 @@ import java.util.*;
 public class Track {
 
 
-    private Config.SpaceType[][] grid;
-    private int width;
+    private List<Config.SpaceType[]> grid;
+    private int width = -1;
     private int height;
     private List<Car> cars;
 
@@ -67,9 +71,25 @@ public class Track {
      * @throws FileNotFoundException if the given track file could not be found
      * @throws InvalidTrackFormatException if the track file contains invalid data (no tracklines, no
      */
-    public Track(File trackFile) throws FileNotFoundException//, InvalidTrackFormatException
+    public Track(File trackFile) throws FileNotFoundException, InvalidTrackFormatException
     {
-        // todo
+        this.grid = new ArrayList<>();
+        this.cars = new ArrayList<>();
+
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get(trackFile.getPath()));
+            String line;
+            int lineNr = 0;
+            while ((line = reader.readLine()) != null) {
+                this.grid.add(this.processLine(line, lineNr));
+                lineNr++;
+            }
+        } catch (IOException e) {
+            FileNotFoundException newException = new FileNotFoundException();
+            newException.addSuppressed(e);
+            throw newException;
+        }
+
     }
 
     public Config.SpaceType getSpaceType(PositionVector $position) {
@@ -92,11 +112,33 @@ public class Track {
         return null; // has to be implemented
     }
 
-    public Config.SpaceType[][] getGrid() {
+    private Config.SpaceType[] processLine(String line, int lineNr) throws InvalidTrackFormatException {
+        if (this.width == -1) {
+            this.width = line.length();
+        } else if (this.width != line.length()) {
+            throw new InvalidTrackFormatException("All lines must have the same length.");
+        }
+
+        Config.SpaceType[] lineOfSpaces = new Config.SpaceType[this.width];
+        this.grid.add(new Config.SpaceType[line.length()]);
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            Config.SpaceType spaceType = Config.SpaceType.get(c);
+            if (spaceType != null) {
+                lineOfSpaces[i] = spaceType;
+            } else {
+                lineOfSpaces[i] = Config.SpaceType.TRACK;
+                this.cars.add(new Car(c, new PositionVector(i, lineNr), new PositionVector(0, 0)));
+            }
+        }
+        return lineOfSpaces;
+    }
+
+    public List<Config.SpaceType[]> getGrid() {
         return grid;
     }
 
-    public void setGrid(Config.SpaceType[][] grid) {
+    public void setGrid(List<Config.SpaceType[]> grid) {
         this.grid = grid;
     }
 

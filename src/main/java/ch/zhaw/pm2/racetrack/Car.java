@@ -10,7 +10,7 @@ package ch.zhaw.pm2.racetrack;
  */
 public class Car {
 
-    public Car() {
+    public Car(char c, PositionVector position, PositionVector velocity) {
 
     }
 
