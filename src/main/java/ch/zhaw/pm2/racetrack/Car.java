@@ -32,6 +32,26 @@ public class Car {
         game = new Game();
     }
 
+    public void setId(char id) {
+        this.id = id;
+    }
+
+    public void setPosition(PositionVector position) {
+        this.position = position;
+    }
+
+    public void setVelocity(PositionVector velocity) {
+        this.velocity = velocity;
+    }
+
+    public void setCrashed(boolean crashed) {
+        isCrashed = crashed;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     public char getId() {
         return id;
     }
