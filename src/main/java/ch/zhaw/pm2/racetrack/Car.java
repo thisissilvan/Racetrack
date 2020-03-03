@@ -1,6 +1,7 @@
 package ch.zhaw.pm2.racetrack;
 
 import ch.zhaw.pm2.racetrack.PositionVector.Direction;
+import ch.zhaw.pm2.racetrack.exception.CarIsCrashedException;
 
 /**
  * Class representing a car on the racetrack.
@@ -54,8 +55,13 @@ public class Car {
 
     /**
      * This method simply moves a car to the next position while calling the nextPosition() method.
+     * If the car is crashed, a RuntimeException will get thrown.
+     * @throws CarIsCrashedException     an unchecked Exception that tells if a car is crashed and can not do the move.
      */
     public void move(){
+        if (isCrashed()){
+            throw new CarIsCrashedException("Can not move car. Car is crashed.");
+        }
         position = nextPosition();
     }
 
