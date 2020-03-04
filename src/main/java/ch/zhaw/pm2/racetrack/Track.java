@@ -112,6 +112,15 @@ public class Track {
         return this.cars.get(carNr).getVelocity();
     }
 
+    private Character getCarId(PositionVector positionVector) {
+        for (Car car : this.cars) {
+            if (car.getPosition().equals(positionVector)) {
+                return car.getId();
+            }
+        }
+        return null;
+    }
+
     private Config.SpaceType[] processLine(String line, int lineNr) throws InvalidTrackFormatException {
         if (this.width == -1) {
             this.width = line.length();
@@ -167,11 +176,20 @@ public class Track {
 
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
+        int y = 0;
         for (Config.SpaceType[] line : this.grid) {
+            int x = 0;
             for (Config.SpaceType spaceType : line) {
-                stringBuilder.append(spaceType.getValue());
-                stringBuilder.append("\n");
+                Character carIdOnThisSpace = this.getCarId(new PositionVector(x, y));
+                if (carIdOnThisSpace != null) {
+                    stringBuilder.append(carIdOnThisSpace);
+                } else {
+                    stringBuilder.append(spaceType.getValue());
+                }
+                x++;
             }
+            stringBuilder.append("\n");
+            y++;
         }
         return stringBuilder.toString();
     }
