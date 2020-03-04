@@ -180,8 +180,7 @@ public class Game {
      * @return A boolean indicator if the car would crash with a WALL or another car.
      */
     public boolean willCarCrash(int carIndex, PositionVector position) {
-        return (track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)) == ('#') || collisionWithOtherCars(carIndex, position));
-        //Todo: how can I use enum WALL
+        return (track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)) == (Config.SpaceType.WALL) || collisionWithOtherCars(carIndex, position));
     }
 
 

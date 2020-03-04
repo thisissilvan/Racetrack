@@ -60,10 +60,6 @@ public class Car {
         return position;
     }
 
-    public void setPosition (PositionVector newPosition) {
-        position = newPosition;
-    }
-
     public PositionVector getVelocity() {
         return velocity;
     }
@@ -118,9 +114,5 @@ public class Car {
         return isCrashed;
     }
 
-
-    public Car(char c, PositionVector position, PositionVector velocity) {
-
-    }
 
 }

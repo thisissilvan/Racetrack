@@ -57,8 +57,6 @@ import java.util.*;
  * <p>The Track can return a String representing the current state of the race (including car positons)</p>
  */
 public class Track {
-    private List<Car> cars = new ArrayList<>();
-    private Config config;
 
     private List<Config.SpaceType[]> grid;
     private int width = -1;
@@ -178,30 +176,13 @@ public class Track {
     }
 
 
-    public char getSpaceType(PositionVector position){
-        return 'c'; //TODO: noch zu implementieren
-    }
 
-    public int getCarCount(){
-        return 0;
-    }
-
-    public char getCarId(int id){
-        return 0;
-    }
 
     public PositionVector getCarPos(int id){ return null; }
 
-    public PositionVector getCarVelocity(int id){
-        return null;
-    }
 
     public void setCarIsCrashed(int id) {
         cars.get(id).crash();
-    }
-
-    public List <Car> getCars(){
-        return null;
     }
 
 }

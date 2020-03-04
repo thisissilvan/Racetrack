@@ -2,13 +2,14 @@ package ch.zhaw.pm2.racetrack;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-    Track track;
+    //Track track = new Track("trackFile");
     Game game;
     PositionVector positionVector;
 
@@ -47,6 +48,6 @@ class GameTest {
         rightArguments.add(new PositionVector(4,4));
 
         List<PositionVector> pathList = game.calculatePath(startPosition, endPosition);
-        assertEquals(pathList.size(), rightArguments.size());
+        assertEquals(pathList, rightArguments);
     }
 }
