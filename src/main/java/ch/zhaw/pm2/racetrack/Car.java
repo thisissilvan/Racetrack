@@ -26,23 +26,11 @@ public class Car {
         return id;
     }
 
-    public void setId(char id) {
-        this.id = id;
-    }
-
     public PositionVector getPosition() {
         return position;
     }
 
-    public void setPosition(PositionVector position) {
-        this.position = position;
-    }
-
     public PositionVector getVelocity() {
         return velocity;
-    }
-
-    public void setVelocity(PositionVector velocity) {
-        this.velocity = velocity;
     }
 }
