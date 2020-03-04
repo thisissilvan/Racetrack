@@ -99,4 +99,8 @@ public class Car {
     }
 
 
+    public Car(char c, PositionVector position, PositionVector velocity) {
+
+    }
+
 }
