@@ -1,10 +1,13 @@
 package ch.zhaw.pm2.racetrack;
 
-import ch.zhaw.pm2.racetrack.Car;
 import ch.zhaw.pm2.racetrack.exception.InvalidTrackFormatException;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -15,7 +18,7 @@ import java.util.*;
  * <p>Positions on the track grid are specified using {@link PositionVector} objects. These are vectors containing an
  * x/y coordinate pair, pointing from the zero-point (top-left) to the addressed space in the grid.</p>
  *
- * <p>Each position in the grid represents a space which can hold an enum object of type {@link SpaceType}.<br>
+ * <p>Each position in the grid represents a space which can hold an enum object of type {@link Config.SpaceType}.<br>
  * Possible Space types are:
  * <ul>
  *  <li>WALL : road boundary or off track space</li>
@@ -56,6 +59,11 @@ import java.util.*;
 public class Track {
 
 
+    private List<Config.SpaceType[]> grid;
+    private int width = -1;
+    private int height;
+    private List<Car> cars;
+
     /**
      * Initialize a Track from the given track file.
      *
@@ -63,9 +71,127 @@ public class Track {
      * @throws FileNotFoundException if the given track file could not be found
      * @throws InvalidTrackFormatException if the track file contains invalid data (no tracklines, no
      */
-    public Track(File trackFile) throws FileNotFoundException//, InvalidTrackFormatException
+    public Track(File trackFile) throws FileNotFoundException, InvalidTrackFormatException
     {
-        // todo
+        this.grid = new ArrayList<>();
+        this.cars = new ArrayList<>();
+
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get(trackFile.getPath()));
+            String line;
+            int lineNr = 0;
+            while ((line = reader.readLine()) != null) {
+                this.grid.add(this.processLine(line, lineNr));
+                lineNr++;
+            }
+        } catch (IOException e) {
+            FileNotFoundException newException = new FileNotFoundException();
+            newException.addSuppressed(e);
+            throw newException;
+        }
+
+    }
+
+    public Config.SpaceType getSpaceType(PositionVector position) {
+        return this.grid.get(position.getY())[position.getY()];
+    }
+
+    public int getCarCount() {
+        return this.cars.size();
+    }
+
+    public char getCarId(int carNr) {
+        return this.cars.get(carNr).getId();
+    }
+
+    public PositionVector getCarPosition(int carNr) {
+        return this.cars.get(carNr).getPosition();
+    }
+
+    public PositionVector getCarVelocity(int carNr) {
+        return this.cars.get(carNr).getVelocity();
+    }
+
+    private Character getCarId(PositionVector positionVector) {
+        for (Car car : this.cars) {
+            if (car.getPosition().equals(positionVector)) {
+                return car.getId();
+            }
+        }
+        return null;
+    }
+
+    private Config.SpaceType[] processLine(String line, int lineNr) throws InvalidTrackFormatException {
+        if (this.width == -1) {
+            this.width = line.length();
+        } else if (this.width != line.length()) {
+            throw new InvalidTrackFormatException("All lines must have the same length.");
+        }
+
+        Config.SpaceType[] lineOfSpaces = new Config.SpaceType[this.width];
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            Config.SpaceType spaceType = Config.SpaceType.get(c);
+            if (spaceType != null) {
+                lineOfSpaces[i] = spaceType;
+            } else {
+                lineOfSpaces[i] = Config.SpaceType.TRACK;
+                this.cars.add(new Car(c, new PositionVector(i, lineNr), new PositionVector(0, 0)));
+            }
+        }
+        return lineOfSpaces;
+    }
+
+    public List<Config.SpaceType[]> getGrid() {
+        return grid;
+    }
+
+    public void setGrid(List<Config.SpaceType[]> grid) {
+        this.grid = grid;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public List<ch.zhaw.pm2.racetrack.Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<ch.zhaw.pm2.racetrack.Car> cars) {
+        this.cars = cars;
+    }
+
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        int y = 0;
+        for (Config.SpaceType[] line : this.grid) {
+            int x = 0;
+            for (Config.SpaceType spaceType : line) {
+                Character carIdOnThisSpace = this.getCarId(new PositionVector(x, y));
+                if (carIdOnThisSpace != null) {
+                    stringBuilder.append(carIdOnThisSpace);
+                } else {
+                    stringBuilder.append(spaceType.getValue());
+                }
+                x++;
+            }
+            stringBuilder.append("\n");
+            y++;
+        }
+        return stringBuilder.toString();
     }
 
 }

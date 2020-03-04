@@ -1,6 +1,8 @@
 package ch.zhaw.pm2.racetrack;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Config {
     public static final int MAX_CARS = 9;
@@ -25,9 +27,27 @@ public class Config {
         FINISH_LEFT('<'),
         FINISH_RIGHT('>');
 
+        // Reverse-lookup map for getting a SpaceType from a value
+        private static final Map<Character, SpaceType> lookup = new HashMap<>();
+
+        static {
+            for (SpaceType d : SpaceType.values()) {
+                lookup.put(d.getValue(), d);
+            }
+        }
+
         private final char value;
+
         SpaceType(final char c) {
             value = c;
+        }
+
+        public char getValue() {
+            return value;
+        }
+
+        public static SpaceType get(char c) {
+            return SpaceType.lookup.get(c);
         }
     }
 
