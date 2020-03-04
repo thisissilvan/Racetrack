@@ -10,8 +10,39 @@ package ch.zhaw.pm2.racetrack;
  */
 public class Car {
 
-    public Car(char c, PositionVector position, PositionVector velocity) {
+    private char id;
 
+    private PositionVector position;
+
+    private PositionVector velocity;
+
+    public Car(char id, PositionVector position, PositionVector velocity) {
+        this.id = id;
+        this.position = position;
+        this.velocity = velocity;
     }
 
+    public char getId() {
+        return id;
+    }
+
+    public void setId(char id) {
+        this.id = id;
+    }
+
+    public PositionVector getPosition() {
+        return position;
+    }
+
+    public void setPosition(PositionVector position) {
+        this.position = position;
+    }
+
+    public PositionVector getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(PositionVector velocity) {
+        this.velocity = velocity;
+    }
 }
