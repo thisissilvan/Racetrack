@@ -120,7 +120,6 @@ public class Track {
         }
 
         Config.SpaceType[] lineOfSpaces = new Config.SpaceType[this.width];
-        this.grid.add(new Config.SpaceType[line.length()]);
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
             Config.SpaceType spaceType = Config.SpaceType.get(c);
@@ -167,7 +166,14 @@ public class Track {
     }
 
     public String toString() {
-        return null; // has to be implemented
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Config.SpaceType[] line : this.grid) {
+            for (Config.SpaceType spaceType : line) {
+                stringBuilder.append(spaceType.getValue());
+                stringBuilder.append("\n");
+            }
+        }
+        return stringBuilder.toString();
     }
 
 }
