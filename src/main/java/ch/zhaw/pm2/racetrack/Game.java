@@ -114,7 +114,7 @@ public class Game {
 
     //todo
     public boolean gameIsWon(){
-        return true;
+        return track.getCars().size() == 0;
     }
 
     /**
