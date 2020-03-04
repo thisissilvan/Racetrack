@@ -16,7 +16,6 @@ public class Car {
     private PositionVector position;
     private PositionVector velocity;
     private boolean isCrashed;
-    private Game game;
 
     /**
      * Car Constructor.
@@ -29,7 +28,6 @@ public class Car {
         this.position = position;
         this.velocity = velocity;
         this.isCrashed = false;
-        //game = new Game();
     }
 
     public void setId(char id) {
@@ -46,10 +44,6 @@ public class Car {
 
     public void setCrashed(boolean crashed) {
         isCrashed = crashed;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     public char getId() {
@@ -92,10 +86,8 @@ public class Car {
      *  - The actual turn will end in the wall
      */
     public void crash(){
-        if (game.willCarCrash(id, position)) {
             isCrashed = true;
         }
-    }
 
     /**
      * The method accelerate calculates the velocity. It takes the direction as a parameter.
