@@ -101,7 +101,7 @@ public class Car {
      * The method accelerate calculates the velocity. It takes the direction as a parameter.
      * @param direction the direction
      */
-    public void accelerate(Direction direction){
+    public void accelerate(Direction direction) {
         velocity = PositionVector.add(direction.vector, velocity);
     }
 
