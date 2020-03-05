@@ -11,8 +11,18 @@ import static ch.zhaw.pm2.racetrack.PositionVector.*;
  */
 public class Game {
     public static final int NO_WINNER = -1;
+    private int currentCar;
+    private Track track;
+    private PositionVector positionVector;
+    //private Direction direction;
 
-
+    /**
+     * Game controller class, receives a track when initialised.
+     * @param track which is used for the game
+     */
+    public Game (Track track){
+        this.track = track;
+    }
 
     /**
      * Return the index of the current active car.
@@ -20,8 +30,7 @@ public class Game {
      * @return The zero-based number of the current car
      */
     public int getCurrentCarIndex() {
-        // todo
-        return 0;
+        return currentCar;
     }
 
     /**
@@ -30,8 +39,7 @@ public class Game {
      * @return A char containing the id of the car
      */
     public char getCarId(int carIndex) {
-        // todo
-        return ' ';
+        return track.getCarId(carIndex);
     }
 
     /**
@@ -40,8 +48,7 @@ public class Game {
      * @return A PositionVector containing the car's current position
      */
     public PositionVector getCarPosition(int carIndex) {
-        // todo
-        return null;
+        return track.getCarPos(carIndex);
     }
 
     /**
@@ -50,8 +57,7 @@ public class Game {
      * @return A PositionVector containing the car's current velocity
      */
     public PositionVector getCarVelocity(int carIndex) {
-        // todo
-        return null;
+        return track.getCarVelocity(carIndex);
     }
 
     /**
@@ -89,15 +95,37 @@ public class Game {
      * @param acceleration A Direction containing the current cars acceleration vector (-1,0,1) in x and y direction
      *                     for this turn
      */
-    public void doCarTurn(Direction acceleration) {
+    //posToBeChecked = pos + (v + a)
+    public PositionVector posToBeChecked(Direction acceleration){
+        return positionVector.add(getCarPosition(getCurrentCarIndex()), positionVector.add(getCarVelocity(getCurrentCarIndex()), acceleration.vector));
+    }
 
+    public void doCarTurn(Direction acceleration){
+        if(willCarCrash(getCurrentCarIndex(), posToBeChecked(acceleration))){
+            track.setCarIsCrashed(getCurrentCarIndex());
+            //TODO:check if only one car remaining -> winner car
+        }
+        //TODO: else if (carWins) { }
+        else{
+            track.getCars().get(getCurrentCarIndex()).accelerate(acceleration); //velocity update
+            track.getCars().get(getCurrentCarIndex()).move(); //pos update
+        }
+    }
+
+    //todo
+    public boolean gameIsWon(){
+        return track.getCars().size() == 0;
     }
 
     /**
      * Switches to the next car who is still in the game. Skips crashed cars.
      */
     public void switchToNextActiveCar() {
-
+        int nextCar;
+        do {
+            nextCar = (currentCar + 1) % track.getCarCount();
+        } while (track.getCars().get(nextCar).isCrashed());
+        currentCar = nextCar;
     }
 
 
@@ -114,9 +142,35 @@ public class Game {
      * @return Intervening grid positions as a List of PositionVector's, including the starting and ending positions.
      */
     public List<PositionVector> calculatePath(PositionVector startPosition, PositionVector endPosition) {
-        // todo
+        List<PositionVector> pathList = new ArrayList<>();
+        int x1 = startPosition.getX();
+        int y1 = startPosition.getY();
+        int x2 = endPosition.getX();
+        int y2 = endPosition.getY();
+        int newSlope = 2*(y2-y1);
+        int newSlopeError = newSlope - (x2-x1);
 
-        return new ArrayList<PositionVector>();
+        for (int x = x1, y = y1; x <= x2; x++) {
+            pathList.add(new PositionVector(x, y));
+            newSlopeError += newSlope;
+            if (newSlopeError >= 0) {
+                y++;
+                newSlopeError -= 2*(x2-x1);
+            }
+        }
+        return pathList;
+    }
+
+    private boolean collisionWithOtherCars(int id, PositionVector position){
+        List<PositionVector> pathList = new ArrayList<>();
+        pathList = calculatePath(getCarPosition(id), position);
+        boolean collision = false;
+        for (int i = 0; i < track.getCars().size(); i++) {
+            if (pathList.contains(track.getCarPos(i))){
+                collision = true;
+            }
+        }
+        return collision;
     }
 
     /**
@@ -126,8 +180,7 @@ public class Game {
      * @return A boolean indicator if the car would crash with a WALL or another car.
      */
     public boolean willCarCrash(int carIndex, PositionVector position) {
-        // todo
-        return false;
+        return (track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)) == (Config.SpaceType.WALL) || collisionWithOtherCars(carIndex, position));
     }
 
 
