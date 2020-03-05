@@ -58,7 +58,6 @@ import java.util.*;
  */
 public class Track {
 
-
     private List<Config.SpaceType[]> grid;
     private int width = -1;
     private int height;
@@ -192,6 +191,16 @@ public class Track {
             y++;
         }
         return stringBuilder.toString();
+    }
+
+
+
+
+    public PositionVector getCarPos(int id){ return null; }
+
+
+    public void setCarIsCrashed(int id) {
+        cars.get(id).crash();
     }
 
 }
