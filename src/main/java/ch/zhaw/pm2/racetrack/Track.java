@@ -148,32 +148,16 @@ public class Track {
         return grid;
     }
 
-    public void setGrid(List<Config.SpaceType[]> grid) {
-        this.grid = grid;
-    }
-
     public int getWidth() {
         return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
     }
 
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
     public List<ch.zhaw.pm2.racetrack.Car> getCars() {
         return cars;
-    }
-
-    public void setCars(List<ch.zhaw.pm2.racetrack.Car> cars) {
-        this.cars = cars;
     }
 
     public String toString() {
