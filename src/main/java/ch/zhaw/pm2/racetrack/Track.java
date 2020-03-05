@@ -60,7 +60,7 @@ public class Track {
 
     private List<Config.SpaceType[]> grid;
     private int width = -1;
-    private int height;
+    private int height = -1;
     private List<Car> cars;
 
     /**
@@ -76,19 +76,30 @@ public class Track {
         this.cars = new ArrayList<>();
 
         try {
-            BufferedReader reader = Files.newBufferedReader(Paths.get(trackFile.getPath()));
-            String line;
-            int lineIndex = 0;
-            while ((line = reader.readLine()) != null) {
-                this.grid.add(this.processLine(line, lineIndex));
-                lineIndex++;
-            }
+            readTrackFile(trackFile);
         } catch (IOException e) {
             FileNotFoundException newException = new FileNotFoundException();
             newException.addSuppressed(e);
             throw newException;
         }
+    }
 
+    private void readTrackFile(File trackFile) throws IOException, InvalidTrackFormatException {
+        boolean trackGridFound = false;
+        BufferedReader reader = Files.newBufferedReader(Paths.get(trackFile.getPath()));
+        String line;
+        int lineIndex = 0;
+        while ((line = reader.readLine()) != null && !(trackGridFound && line.length() == 0)) {
+            if (line.length() > 0) {
+                this.grid.add(this.processLine(line, lineIndex));
+                trackGridFound = true;
+                lineIndex++;
+            }
+        }
+        if (lineIndex == 0) {
+            throw new InvalidTrackFormatException("Track without grid is invalid.");
+        }
+        this.height = lineIndex;
     }
 
     public Config.SpaceType getSpaceType(PositionVector position) {
