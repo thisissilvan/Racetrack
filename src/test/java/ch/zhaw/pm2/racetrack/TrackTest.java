@@ -15,6 +15,12 @@ public class TrackTest {
     private static final int POSITION_FINISH_RIGHT = 22 * 64 + 22;
 
 
+    /**
+     * Are the space-types on the correct positions in the output string with the given track-file?
+     *
+     * @throws FileNotFoundException
+     * @throws InvalidTrackFormatException
+     */
     @Test
     void toStringTest() throws FileNotFoundException, InvalidTrackFormatException {
         Track track = new Track(new File("tracks/tests/challenge-test-track.txt"));
@@ -25,11 +31,25 @@ public class TrackTest {
         assertEquals(trackString.charAt(POSITION_TRACK), Config.SpaceType.TRACK.getValue());
     }
 
+    /**
+     * Is correct exception thrown, if to many cars are on track?
+     */
     @Test
     void maxCarTest() {
         assertThrows(
                 InvalidTrackFormatException.class,
                 () -> new Track(new File("tracks/tests/ten-cars-track.txt"))
+        );
+    }
+
+    /**
+     * Is correct exception thrown, if lengths of lines are unequal?
+     */
+    @Test
+    void unequalLineLengthTest() {
+        assertThrows(
+                InvalidTrackFormatException.class,
+                () -> new Track(new File("tracks/tests/unequal-line-length-track.txt"))
         );
     }
 

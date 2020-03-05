@@ -78,10 +78,10 @@ public class Track {
         try {
             BufferedReader reader = Files.newBufferedReader(Paths.get(trackFile.getPath()));
             String line;
-            int lineNr = 0;
+            int lineIndex = 0;
             while ((line = reader.readLine()) != null) {
-                this.grid.add(this.processLine(line, lineNr));
-                lineNr++;
+                this.grid.add(this.processLine(line, lineIndex));
+                lineIndex++;
             }
         } catch (IOException e) {
             FileNotFoundException newException = new FileNotFoundException();
@@ -120,7 +120,7 @@ public class Track {
         return null;
     }
 
-    private Config.SpaceType[] processLine(String line, int lineNr) throws InvalidTrackFormatException {
+    private Config.SpaceType[] processLine(String line, int lineIndex) throws InvalidTrackFormatException {
         if (this.width == -1) {
             this.width = line.length();
         } else if (this.width != line.length()) {
@@ -128,20 +128,24 @@ public class Track {
         }
 
         Config.SpaceType[] lineOfSpaces = new Config.SpaceType[this.width];
-        for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
+        for (int charIndex = 0; charIndex < line.length(); charIndex++) {
+            char c = line.charAt(charIndex);
             Config.SpaceType spaceType = Config.SpaceType.get(c);
             if (spaceType != null) {
-                lineOfSpaces[i] = spaceType;
+                lineOfSpaces[charIndex] = spaceType;
             } else {
-                lineOfSpaces[i] = Config.SpaceType.TRACK;
-                if (this.cars.size() + 1 > Config.MAX_CARS) {
-                    throw new InvalidTrackFormatException("The cars contained in this track file, exceed the car-limit.");
-                }
-                this.cars.add(new Car(c, new PositionVector(i, lineNr), new PositionVector(0, 0)));
+                lineOfSpaces[charIndex] = Config.SpaceType.TRACK;
+                addCarToGrid(lineIndex, charIndex, c);
             }
         }
         return lineOfSpaces;
+    }
+
+    private void addCarToGrid(int yPosition, int xPosition, char c) throws InvalidTrackFormatException {
+        if (this.cars.size() + 1 > Config.MAX_CARS) {
+            throw new InvalidTrackFormatException("The cars contained in this track file, exceed the car-limit.");
+        }
+        this.cars.add(new Car(c, new PositionVector(xPosition, yPosition), new PositionVector(0, 0)));
     }
 
     public List<Config.SpaceType[]> getGrid() {
