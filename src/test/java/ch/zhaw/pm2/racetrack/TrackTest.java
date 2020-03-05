@@ -14,14 +14,23 @@ public class TrackTest {
     private static final int POSITION_TRACK = 22 * 64 + 30;
     private static final int POSITION_FINISH_RIGHT = 22 * 64 + 22;
 
+
     @Test
     void toStringTest() throws FileNotFoundException, InvalidTrackFormatException {
-        Track track = new Track(new File("tracks/tests/test-track.txt"));
+        Track track = new Track(new File("tracks/tests/challenge-test-track.txt"));
         String trackString = track.toString();
         assertEquals(trackString.charAt(POSITION_CAR_A), 'a');
         assertEquals(trackString.charAt(POSITION_WALL), Config.SpaceType.WALL.getValue());
         assertEquals(trackString.charAt(POSITION_FINISH_RIGHT), Config.SpaceType.FINISH_RIGHT.getValue());
         assertEquals(trackString.charAt(POSITION_TRACK), Config.SpaceType.TRACK.getValue());
+    }
+
+    @Test
+    void maxCarTest() {
+        assertThrows(
+                InvalidTrackFormatException.class,
+                () -> new Track(new File("tracks/tests/ten-cars-track.txt"))
+        );
     }
 
 }

@@ -135,6 +135,9 @@ public class Track {
                 lineOfSpaces[i] = spaceType;
             } else {
                 lineOfSpaces[i] = Config.SpaceType.TRACK;
+                if (this.cars.size() + 1 > Config.MAX_CARS) {
+                    throw new InvalidTrackFormatException("The cars contained in this track file, exceed the car-limit.");
+                }
                 this.cars.add(new Car(c, new PositionVector(i, lineNr), new PositionVector(0, 0)));
             }
         }
