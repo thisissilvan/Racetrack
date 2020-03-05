@@ -14,6 +14,13 @@ public class TrackTest {
     private static final int POSITION_TRACK = 22 * 64 + 30;
     private static final int POSITION_FINISH_RIGHT = 22 * 64 + 22;
 
+    private String testTrackDirectory;
+
+    public TrackTest() {
+        Config config = new Config();
+        this.testTrackDirectory = config.getTestTrackDirectoryPath();
+    }
+
     /**
      * Are the space-types on the correct positions in the output string with the given track-file?
      * Does the grid have the correct height?
@@ -23,7 +30,7 @@ public class TrackTest {
      */
     @Test
     void toStringTest() throws FileNotFoundException, InvalidTrackFormatException {
-        Track track = new Track(new File("tracks/tests/challenge.txt"));
+        Track track = new Track(new File(this.testTrackDirectory + "challenge.txt"));
         checkChallengeTrack(track);
     }
 
@@ -36,7 +43,7 @@ public class TrackTest {
      */
     @Test
     void emptyLinesTest() throws FileNotFoundException, InvalidTrackFormatException {
-        Track track = new Track(new File("tracks/tests/challenge-empty-lines.txt"));
+        Track track = new Track(new File(this.testTrackDirectory + "challenge-empty-lines.txt"));
         checkChallengeTrack(track);
     }
 
@@ -56,7 +63,7 @@ public class TrackTest {
     void maxCarTest() {
         assertThrows(
                 InvalidTrackFormatException.class,
-                () -> new Track(new File("tracks/tests/ten-cars-track.txt"))
+                () -> new Track(new File(this.testTrackDirectory + "ten-cars-track.txt"))
         );
     }
 
@@ -67,7 +74,7 @@ public class TrackTest {
     void unequalLineLengthTest() {
         assertThrows(
                 InvalidTrackFormatException.class,
-                () -> new Track(new File("tracks/tests/unequal-line-length-track.txt"))
+                () -> new Track(new File(this.testTrackDirectory + "unequal-line-length-track.txt"))
         );
     }
 
@@ -78,7 +85,7 @@ public class TrackTest {
     void emptyTrackTest() {
         assertThrows(
                 InvalidTrackFormatException.class,
-                () -> new Track(new File("tracks/tests/empty-track.txt"))
+                () -> new Track(new File(this.testTrackDirectory + "empty-track.txt"))
         );
     }
 
