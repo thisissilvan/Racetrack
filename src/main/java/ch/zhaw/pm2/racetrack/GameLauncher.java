@@ -3,9 +3,8 @@ import static ch.zhaw.pm2.racetrack.PositionVector.*;
 
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextTerminal;
-import java.awt.*;
 
-public class Launcher {
+public class GameLauncher {
     void runGame(TextIO textIO, TextTerminal<?> terminal, Game game) {
         boolean running = true;
         while (game.getWinner()== -1 && running) {
