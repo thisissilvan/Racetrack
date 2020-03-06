@@ -5,7 +5,7 @@ import org.beryx.textio.TextIO;
 import org.beryx.textio.TextTerminal;
 
 public class GameLauncher {
-    void runGame(TextIO textIO, TextTerminal<?> terminal, Game game) {
+    void run(TextIO textIO, TextTerminal<?> terminal, Game game) {
         boolean running = true;
         while (game.getWinner()== -1 && running) {
             terminal.println("-------------------------------------------------------------");
@@ -23,7 +23,7 @@ public class GameLauncher {
             }
         }
         terminal.println("-------------------------------------------------------------");
-        terminal.println("Congratulation " + game.getWinner());
+        terminal.println("Congratulation " + game.getCarId(game.getWinner()));
         terminal.println("You have won!");
     }
 }
