@@ -23,5 +23,15 @@ public class Runner {
             e.printStackTrace();
         }
 
+        //turn
+        int currentCar = game.getCurrentCarIndex();
+
+        boolean running = true;
+        while (game.getWinner()== -1 && running) {
+            game.doCarTurn(display.currentTurn(game.getCarId(currentCar), game.getCarVelocity(currentCar)));
+            if(game.getWinner()== -1){
+                game.switchToNextActiveCar();
+            }
+        }
     }
 }
