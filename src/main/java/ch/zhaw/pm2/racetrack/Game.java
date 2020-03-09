@@ -65,8 +65,11 @@ public class Game {
      * @return The winning car's index (zero-based, see getCurrentCar()), or NO_WINNER if the game is still in progress
      */
     public int getWinner() {
-        //todo
-        return 0;
+        int winner=NO_WINNER;
+        if(track.getCars().size()==1){
+            winner =currentCar;
+        }
+        return winner;
     }
 
     /**
