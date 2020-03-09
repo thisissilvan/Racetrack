@@ -12,5 +12,16 @@ import java.io.FileNotFoundException;
 public class Runner {
     Display display = new Display();
     Game game;
+    void run(){
 
+        //Initialise Game with choosen track
+        try {
+            game = new Game(new Track(display.gameInit()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvalidTrackFormatException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
