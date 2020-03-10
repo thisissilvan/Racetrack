@@ -14,6 +14,7 @@ public class Game {
     private int currentCar;
     private Track track;
     private PositionVector positionVector;
+
     //private Direction direction;
 
     /**
@@ -97,24 +98,21 @@ public class Game {
      */
     //posToBeChecked = pos + (v + a)
     public PositionVector posToBeChecked(Direction acceleration){
-        return positionVector.add(getCarPosition(getCurrentCarIndex()), positionVector.add(getCarVelocity(getCurrentCarIndex()), acceleration.vector));
+        return positionVector.add(getCarPosition(currentCar), positionVector.add(getCarVelocity(currentCar), acceleration.vector));
     }
 
     public void doCarTurn(Direction acceleration){
-        if(willCarCrash(getCurrentCarIndex(), posToBeChecked(acceleration))){
-            track.setCarIsCrashed(getCurrentCarIndex());
+        if(willCarCrash(currentCar, posToBeChecked(acceleration))){
+            track.setCarIsCrashed(currentCar);
             //TODO:check if only one car remaining -> winner car
+            if (track.getCarCount()==1) {
+                getWinner();
+            }
+        } else{
+            track.getCars().get(currentCar).accelerate(acceleration); //velocity update
+            track.getCars().get(currentCar).move(); //pos update
+            //TODO: check if this car crosses winline
         }
-        //TODO: else if (carWins) { }
-        else{
-            track.getCars().get(getCurrentCarIndex()).accelerate(acceleration); //velocity update
-            track.getCars().get(getCurrentCarIndex()).move(); //pos update
-        }
-    }
-
-    //todo
-    public boolean gameIsWon(){
-        return track.getCars().size() == 0;
     }
 
     /**
@@ -161,12 +159,24 @@ public class Game {
         return pathList;
     }
 
-    private boolean collisionWithOtherCars(int id, PositionVector position){
+    private boolean collisionWithOtherCars(int carIndex, PositionVector position){
         List<PositionVector> pathList = new ArrayList<>();
-        pathList = calculatePath(getCarPosition(id), position);
+        pathList = calculatePath(getCarPosition(carIndex), position);
         boolean collision = false;
         for (int i = 0; i < track.getCars().size(); i++) {
             if (pathList.contains(track.getCarPos(i))){
+                collision = true;
+            }
+        }
+        return collision;
+    }
+
+    private boolean collisionWithWall(int carIndex, PositionVector position){
+        List<PositionVector> pathList = new ArrayList<>();
+        pathList = calculatePath(getCarPosition(carIndex), position);
+        boolean collision = false;
+        for (int i = 0; i < pathList.size(); i++) {
+            if (track.getSpaceType(pathList.get(i)) == (Config.SpaceType.WALL)) {
                 collision = true;
             }
         }
@@ -180,7 +190,7 @@ public class Game {
      * @return A boolean indicator if the car would crash with a WALL or another car.
      */
     public boolean willCarCrash(int carIndex, PositionVector position) {
-        return (track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)) == (Config.SpaceType.WALL) || collisionWithOtherCars(carIndex, position));
+        return (collisionWithWall(carIndex, position) || collisionWithOtherCars(carIndex, position));
     }
 
 
