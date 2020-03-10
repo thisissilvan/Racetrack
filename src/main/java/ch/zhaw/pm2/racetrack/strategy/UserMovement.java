@@ -10,11 +10,10 @@ public class UserMovement implements MoveStrategy{
 
     Display display = new Display();
 
-    /*
+    /**
      * The user enters the direction through display.
      * @return the users choice on direction
      */
-
     @Override
     public PositionVector.Direction nextMove() {
         return display.userMovement();
