@@ -2,7 +2,11 @@ package ch.zhaw.pm2.racetrack.strategy;
 
 import ch.zhaw.pm2.racetrack.PositionVector;
 
-
+/**
+ * The next turns will get read from a file input.
+ *
+ * @return the next moves
+ */
 public class MoveList implements MoveStrategy {
 
     private final PositionVector[] moveList;
