@@ -33,7 +33,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'ch.zhaw.pm2.racetrack.Runner'
+    mainClassName = 'ch.zhaw.pm2.racetrack.GameLauncher'
 }
 
 test {
