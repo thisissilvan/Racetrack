@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 public class Runner {
     Display display = new Display();
     Game game = new Game();
-    GameLauncher gameLauncher = new GameLauncher();
 
     public void run() {
         //Initialise Game with choosen track
