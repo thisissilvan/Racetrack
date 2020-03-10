@@ -11,6 +11,7 @@ import static ch.zhaw.pm2.racetrack.PositionVector.*;
  */
 public class Game {
     public static final int NO_WINNER = -1;
+    public int WINNER = NO_WINNER;
     private int currentCar;
     private Track track;
     private PositionVector positionVector;
@@ -67,7 +68,7 @@ public class Game {
      */
     public int getWinner() {
         //todo
-        return 0;
+        return WINNER;
     }
 
     /**
@@ -96,22 +97,38 @@ public class Game {
      * @param acceleration A Direction containing the current cars acceleration vector (-1,0,1) in x and y direction
      *                     for this turn
      */
-    //posToBeChecked = pos + (v + a)
+    //posToBeChecked = curr_pos + (v + a)
     public PositionVector posToBeChecked(Direction acceleration){
         return positionVector.add(getCarPosition(currentCar), positionVector.add(getCarVelocity(currentCar), acceleration.vector));
     }
 
     public void doCarTurn(Direction acceleration){
-        if(willCarCrash(currentCar, posToBeChecked(acceleration))){
+        List<PositionVector> pathList = new ArrayList<>();
+        pathList = calculatePath(getCarPosition(currentCar), posToBeChecked(acceleration));
+        if (willCarCrash(currentCar, posToBeChecked(acceleration))) {
             track.setCarIsCrashed(currentCar);
-            //TODO:check if only one car remaining -> winner car
-            if (track.getCarCount()==1) {
-                getWinner();
+            //check if only one car remaining -> winner car
+            int count = 0;
+            for (int i = 0; i < track.getCarCount(); i++) {
+                if (!track.getCars().get(i).isCrashed()) {
+                    count++;
+                    WINNER = i;
+                }
             }
-        } else{
+            if (count != 1) {
+                WINNER = NO_WINNER;
+            }
+            //TODO: Check how to set end of game
+        } else {
             track.getCars().get(currentCar).accelerate(acceleration); //velocity update
             track.getCars().get(currentCar).move(); //pos update
             //TODO: check if this car crosses winline
+            for (int i = 0; i < pathList.size(); i++) {
+                if (track.getSpaceType(pathList.get(i)) == (Config.SpaceType.FINISH_UP)) {
+                    WINNER = currentCar;
+                }
+            }
+            //TODO: End of the game
         }
     }
 
