@@ -11,12 +11,13 @@ import java.io.FileNotFoundException;
  */
 public class Runner {
     Display display = new Display();
-    Game game;
-    void run(){
+    Game game = new Game();
+    GameLauncher gameLauncher = new GameLauncher();
 
+    public void run() {
         //Initialise Game with choosen track
         try {
-            game = new Game(new Track(display.gameInit()));
+            game = new Game(new Track(display.welcomeMesseage()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (InvalidTrackFormatException e) {
@@ -28,7 +29,7 @@ public class Runner {
 
         boolean running = true;
         while (game.getWinner()== -1 && running) {
-            game.doCarTurn(display.currentTurn(game.getCarId(currentCar), game.getCarVelocity(currentCar)));
+            // game.doCarTurn(display.currentTurn();
             if(game.getWinner()== -1){
                 game.switchToNextActiveCar();
             }
