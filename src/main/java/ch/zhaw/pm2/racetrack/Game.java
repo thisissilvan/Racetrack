@@ -98,31 +98,43 @@ public class Game {
      *                     for this turn
      */
     //posToBeChecked = curr_pos + (v + a)
-    public PositionVector posToBeChecked(Direction acceleration){
+    private PositionVector posToBeChecked(Direction acceleration){
         return positionVector.add(getCarPosition(currentCar), positionVector.add(getCarVelocity(currentCar), acceleration.vector));
+    }
+    //checks after crash if only one car remaining -> this will be the winner
+    private void remainingCarCheck() {
+        int count = 0;
+        for (int i = 0; i < track.getCarCount(); i++) {
+            if (!track.getCars().get(i).isCrashed()) {
+                count++;
+                WINNER = i;
+            }
+        }
+        if (count != 1) {
+            WINNER = NO_WINNER;
+        }
+    }
+
+    private void carCrossesLine() {
+
     }
 
     public void doCarTurn(Direction acceleration){
-        List<PositionVector> pathList = new ArrayList<>();
-        pathList = calculatePath(getCarPosition(currentCar), posToBeChecked(acceleration));
         if (willCarCrash(currentCar, posToBeChecked(acceleration))) {
             track.setCarIsCrashed(currentCar);
             //check if only one car remaining -> winner car
-            int count = 0;
-            for (int i = 0; i < track.getCarCount(); i++) {
-                if (!track.getCars().get(i).isCrashed()) {
-                    count++;
-                    WINNER = i;
-                }
-            }
-            if (count != 1) {
-                WINNER = NO_WINNER;
-            }
+            remainingCarCheck();
             //TODO: Check how to set end of game
         } else {
+            List<PositionVector> pathList = new ArrayList<>();
+            pathList = calculatePath(getCarPosition(currentCar), posToBeChecked(acceleration));
+            PositionVector startPos = getCarPosition(currentCar);
+            PositionVector endPos = posToBeChecked(acceleration);
+
             track.getCars().get(currentCar).accelerate(acceleration); //velocity update
             track.getCars().get(currentCar).move(); //pos update
             //TODO: check if this car crosses winline
+            if (startPos.getX()>)
             for (int i = 0; i < pathList.size(); i++) {
                 if (track.getSpaceType(pathList.get(i)) == (Config.SpaceType.FINISH_UP)) {
                     WINNER = currentCar;
