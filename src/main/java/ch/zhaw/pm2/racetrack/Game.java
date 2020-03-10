@@ -101,6 +101,7 @@ public class Game {
     private PositionVector posToBeChecked(Direction acceleration){
         return positionVector.add(getCarPosition(currentCar), positionVector.add(getCarVelocity(currentCar), acceleration.vector));
     }
+
     //checks after crash if only one car remaining -> this will be the winner
     private void remainingCarCheck() {
         int count = 0;
@@ -113,10 +114,28 @@ public class Game {
         if (count != 1) {
             WINNER = NO_WINNER;
         }
+        //else game ends because we have one winner
     }
 
-    private void carCrossesLine() {
-
+    //checks after new acceleration and new position, if car reaches/crosses winning line
+    private void carCrossesLineCheck(Direction acceleration) {
+        List<PositionVector> pathList = new ArrayList<>();
+        pathList = calculatePath(getCarPosition(currentCar), posToBeChecked(acceleration));
+        int x1 = getCarPosition(currentCar).getX();
+        int y1 = getCarPosition(currentCar).getY();
+        int x2 = posToBeChecked(acceleration).getX();
+        int y2 = posToBeChecked(acceleration).getY();
+        for (int i = 0; i < pathList.size(); i++) {
+            if (track.getSpaceType(pathList.get(i)) != Config.SpaceType.TRACK
+            && (    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_UP && x1 >= x2) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_DOWN && x2 >= x1) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_RIGHT && y2 >= y1) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_LEFT && y1 >= y2))
+            ) {
+                WINNER = currentCar;
+                break;
+            }
+        }
     }
 
     public void doCarTurn(Direction acceleration){
@@ -124,24 +143,13 @@ public class Game {
             track.setCarIsCrashed(currentCar);
             //check if only one car remaining -> winner car
             remainingCarCheck();
-            //TODO: Check how to set end of game
         } else {
-            List<PositionVector> pathList = new ArrayList<>();
-            pathList = calculatePath(getCarPosition(currentCar), posToBeChecked(acceleration));
-            PositionVector startPos = getCarPosition(currentCar);
-            PositionVector endPos = posToBeChecked(acceleration);
-
             track.getCars().get(currentCar).accelerate(acceleration); //velocity update
             track.getCars().get(currentCar).move(); //pos update
-            //TODO: check if this car crosses winline
-            if (startPos.getX()>)
-            for (int i = 0; i < pathList.size(); i++) {
-                if (track.getSpaceType(pathList.get(i)) == (Config.SpaceType.FINISH_UP)) {
-                    WINNER = currentCar;
-                }
-            }
-            //TODO: End of the game
+            //check if this car crosses winline
+            carCrossesLineCheck(acceleration);
         }
+        //TODO: Check how to set end of game if winner determined
     }
 
     /**
