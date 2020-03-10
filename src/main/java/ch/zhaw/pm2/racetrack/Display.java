@@ -2,7 +2,6 @@ package ch.zhaw.pm2.racetrack;
 
 import static ch.zhaw.pm2.racetrack.PositionVector.*;
 import java.io.File;
-import java.io.ObjectInputFilter;
 import java.util.Arrays;
 
 import org.beryx.textio.TextIO;
