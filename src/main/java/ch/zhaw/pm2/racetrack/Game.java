@@ -18,15 +18,20 @@ public class Game {
 
     /**
      * Game controller class, receives a track when initialised.
+     *
      * @param track which is used for the game
      */
-    public Game (Track track){
+    public Game(Track track) {
         this.track = track;
+    }
+
+    public Game() {
     }
 
     /**
      * Return the index of the current active car.
      * Car indexes are zero-based, so the first car is 0, and the last car is getCarCount() - 1.
+     *
      * @return The zero-based number of the current car
      */
     public int getCurrentCarIndex() {
@@ -99,8 +104,8 @@ public class Game {
      *                     for this turn
      */
     //posToBeChecked = pos + (v + a)
-    public PositionVector posToBeChecked(Direction acceleration){
-        return positionVector.add(getCarPosition(getCurrentCarIndex()), positionVector.add(getCarVelocity(getCurrentCarIndex()), acceleration.vector));
+    public PositionVector posToBeChecked(Direction acceleration) {
+        return add(getCarPosition(getCurrentCarIndex()), add(getCarVelocity(getCurrentCarIndex()), acceleration.vector));
     }
 
     public void doCarTurn(Direction acceleration){
@@ -183,7 +188,7 @@ public class Game {
      * @return A boolean indicator if the car would crash with a WALL or another car.
      */
     public boolean willCarCrash(int carIndex, PositionVector position) {
-        return (track.getSpaceType(positionVector.add(track.getCarPos(carIndex), position)) == (Config.SpaceType.WALL) || collisionWithOtherCars(carIndex, position));
+        return (track.getSpaceType(add(track.getCarPos(carIndex), position)) == (Config.SpaceType.WALL) || collisionWithOtherCars(carIndex, position));
     }
 
 
