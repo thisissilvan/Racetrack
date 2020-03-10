@@ -9,6 +9,7 @@ public class Config {
 
     // Directory containing the track files
     private File trackDirectory = new File("tracks");
+    private String testTrackDirectoryPath = "tracks/tests/";
 
     public enum StrategyType {
         DO_NOT_MOVE, USER, MOVE_LIST
@@ -59,4 +60,11 @@ public class Config {
         this.trackDirectory = trackDirectory;
     }
 
+    public String getTestTrackDirectoryPath() {
+        return testTrackDirectoryPath;
+    }
+
+    public void setTestTrackDirectoryPath(String testTrackDirectoryPath) {
+        this.testTrackDirectoryPath = testTrackDirectoryPath;
+    }
 }

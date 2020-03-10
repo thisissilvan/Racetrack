@@ -60,7 +60,7 @@ public class Track {
 
     private List<Config.SpaceType[]> grid;
     private int width = -1;
-    private int height;
+    private int height = -1;
     private List<Car> cars;
 
     /**
@@ -76,19 +76,30 @@ public class Track {
         this.cars = new ArrayList<>();
 
         try {
-            BufferedReader reader = Files.newBufferedReader(Paths.get(trackFile.getPath()));
-            String line;
-            int lineNr = 0;
-            while ((line = reader.readLine()) != null) {
-                this.grid.add(this.processLine(line, lineNr));
-                lineNr++;
-            }
+            readTrackFile(trackFile);
         } catch (IOException e) {
             FileNotFoundException newException = new FileNotFoundException();
             newException.addSuppressed(e);
             throw newException;
         }
+    }
 
+    private void readTrackFile(File trackFile) throws IOException, InvalidTrackFormatException {
+        boolean trackGridFound = false;
+        BufferedReader reader = Files.newBufferedReader(Paths.get(trackFile.getPath()));
+        String line;
+        int lineIndex = 0;
+        while ((line = reader.readLine()) != null && !(trackGridFound && line.length() == 0)) {
+            if (line.length() > 0) {
+                this.grid.add(this.processLine(line, lineIndex));
+                trackGridFound = true;
+                lineIndex++;
+            }
+        }
+        if (lineIndex == 0) {
+            throw new InvalidTrackFormatException("Track without grid is invalid.");
+        }
+        this.height = lineIndex;
     }
 
     public Config.SpaceType getSpaceType(PositionVector position) {
@@ -120,7 +131,7 @@ public class Track {
         return null;
     }
 
-    private Config.SpaceType[] processLine(String line, int lineNr) throws InvalidTrackFormatException {
+    private Config.SpaceType[] processLine(String line, int lineIndex) throws InvalidTrackFormatException {
         if (this.width == -1) {
             this.width = line.length();
         } else if (this.width != line.length()) {
@@ -128,49 +139,40 @@ public class Track {
         }
 
         Config.SpaceType[] lineOfSpaces = new Config.SpaceType[this.width];
-        for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
+        for (int charIndex = 0; charIndex < line.length(); charIndex++) {
+            char c = line.charAt(charIndex);
             Config.SpaceType spaceType = Config.SpaceType.get(c);
             if (spaceType != null) {
-                lineOfSpaces[i] = spaceType;
+                lineOfSpaces[charIndex] = spaceType;
             } else {
-                lineOfSpaces[i] = Config.SpaceType.TRACK;
-                this.cars.add(new Car(c, new PositionVector(i, lineNr), new PositionVector(0, 0)));
+                lineOfSpaces[charIndex] = Config.SpaceType.TRACK;
+                addCarToGrid(lineIndex, charIndex, c);
             }
         }
         return lineOfSpaces;
+    }
+
+    private void addCarToGrid(int yPosition, int xPosition, char c) throws InvalidTrackFormatException {
+        if (this.cars.size() + 1 > Config.MAX_CARS) {
+            throw new InvalidTrackFormatException("The cars contained in this track file, exceed the car-limit.");
+        }
+        this.cars.add(new Car(c, new PositionVector(xPosition, yPosition), new PositionVector(0, 0)));
     }
 
     public List<Config.SpaceType[]> getGrid() {
         return grid;
     }
 
-    public void setGrid(List<Config.SpaceType[]> grid) {
-        this.grid = grid;
-    }
-
     public int getWidth() {
         return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
     }
 
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
     public List<ch.zhaw.pm2.racetrack.Car> getCars() {
         return cars;
-    }
-
-    public void setCars(List<ch.zhaw.pm2.racetrack.Car> cars) {
-        this.cars = cars;
     }
 
     public String toString() {
