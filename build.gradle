@@ -22,7 +22,7 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:28.1-jre'
-    compile 'org.beryx:text-io:2.8.0'
+    compile 'org.beryx:text-io:3.4.0'
 
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'

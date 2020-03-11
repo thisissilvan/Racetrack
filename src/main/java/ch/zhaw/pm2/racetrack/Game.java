@@ -63,6 +63,12 @@ public class Game {
     }
 
     /**
+     * Get all the cars from the game.
+     * @return A List containing all cars
+     */
+    public List getCarsList() { return track.getCars(); }
+
+    /**
      * Return the winner of the game. If the game is still in progress, returns NO_WINNER.
      * @return The winning car's index (zero-based, see getCurrentCar()), or NO_WINNER if the game is still in progress
      */

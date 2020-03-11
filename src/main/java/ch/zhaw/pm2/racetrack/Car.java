@@ -2,6 +2,7 @@ package ch.zhaw.pm2.racetrack;
 
 import ch.zhaw.pm2.racetrack.PositionVector.Direction;
 import ch.zhaw.pm2.racetrack.exception.CarIsCrashedException;
+import ch.zhaw.pm2.racetrack.strategy.MoveStrategy;
 
 /**
  * Class representing a car on the racetrack.
@@ -16,6 +17,7 @@ public class Car {
     private PositionVector position;
     private PositionVector velocity;
     private boolean isCrashed;
+    private MoveStrategy moveStrategy;
 
     /**
      * Car Constructor.
@@ -42,9 +44,11 @@ public class Car {
         this.velocity = velocity;
     }
 
-    public void setCrashed(boolean crashed) {
-        isCrashed = crashed;
-    }
+    public void setCrashed(boolean crashed) { this.isCrashed = crashed; }
+
+    public MoveStrategy getMoveStrategy() { return moveStrategy; }
+
+    public void setMoveStrategy(MoveStrategy moveStrategy) { this.moveStrategy = moveStrategy;  }
 
     public char getId() {
         return id;
