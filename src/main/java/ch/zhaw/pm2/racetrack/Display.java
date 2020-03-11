@@ -1,6 +1,9 @@
 package ch.zhaw.pm2.racetrack;
 
+import ch.zhaw.pm2.racetrack.strategy.DoNotMove;
+import ch.zhaw.pm2.racetrack.strategy.MoveList;
 import ch.zhaw.pm2.racetrack.strategy.MoveStrategy;
+import ch.zhaw.pm2.racetrack.strategy.UserMovement;
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
@@ -48,9 +51,29 @@ public class Display {
     }
 
     public MoveStrategy retrieveMoveStrategy(){
+        MoveStrategy strategy=null;
         terminal.println("Please choose a strategy.");
-        return null;
+        String format = "%-13s%s%n";
+        terminal.printf(format,"1", "DoNotMove");
+        terminal.printf(format,"2", "UserMovement");
+        terminal.printf(format,"3", "MoveList");
+        int number = textIO.newIntInputReader().read();
+        try{
+            if (number==1){
+                strategy=new DoNotMove();
+            }else if(number==2){
+                strategy= new UserMovement();
+            }else if(number ==3){
+                //strategy = new MoveList();
+            }else{
+                throw new IllegalArgumentException();
+            }
+        }catch (IllegalArgumentException e){
+            terminal.println("Please enter a value between 1 - 3");
+        }
+        return strategy;
     }
+
     public void winnerMessage(char winner){
         terminal.println("Congratulations, the winner is " + winner + " .");
     }
