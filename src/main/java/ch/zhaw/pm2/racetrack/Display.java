@@ -22,7 +22,7 @@ public class Display {
         config = new Config();
     }
 
-    public void welcomeMesseage() {
+    public void welcomeMessage() {
         terminal.println("Welcome to Racetrack! \nPlease choose one of the following tracks:");
         terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
     }

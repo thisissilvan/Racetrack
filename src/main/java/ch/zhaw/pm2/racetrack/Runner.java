@@ -18,8 +18,8 @@ public class Runner {
     }
 
     public void run() {
-        //Initialise Game with choosen track
-        display.welcomeMesseage();
+        //Initialise Game with chosen track
+        display.welcomeMessage();
         try {
             game = new Game(new Track(display.readInputFile()));
         } catch (FileNotFoundException e) {
