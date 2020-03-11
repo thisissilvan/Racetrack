@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
  */
 public class Runner {
     Display display = new Display();
-    Game game = new Game();
+    Game game;
 
     public void run() {
         //Initialise Game with choosen track
@@ -26,7 +26,6 @@ public class Runner {
 
         //turn
         int currentCar = game.getCurrentCarIndex();
-
         boolean running = true;
         while (game.getWinner()== -1 && running) {
             // game.doCarTurn(display.currentTurn();
