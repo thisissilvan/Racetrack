@@ -46,6 +46,8 @@ public class Runner {
             game.doCarTurn(game.getCarsList().get(currentCar).getMoveStrategy().nextMove());
             if(game.getWinner()== -1){
                 game.switchToNextActiveCar();
+            }else{
+                display.winnerMessage(game.getCarId(currentCar));
             }
         }
     }
