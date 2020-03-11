@@ -1,6 +1,8 @@
 package ch.zhaw.pm2.racetrack;
 
 import ch.zhaw.pm2.racetrack.exception.InvalidTrackFormatException;
+import ch.zhaw.pm2.racetrack.strategy.DoNotMove;
+import ch.zhaw.pm2.racetrack.strategy.MoveStrategy;
 
 import java.io.FileNotFoundException;
 
@@ -19,6 +21,7 @@ public class Runner {
 
     public void run() {
         //Initialise Game with chosen track
+
         display.welcomeMessage();
         try {
             game = new Game(new Track(display.readInputFile()));
@@ -27,15 +30,12 @@ public class Runner {
         } catch (InvalidTrackFormatException e) {
             e.printStackTrace();
         }
-
-        //turn
-        int currentCar = game.getCurrentCarIndex();
-        boolean running = true;
-        while (game.getWinner()== -1 && running) {
-            // game.doCarTurn(display.currentTurn();
-            if(game.getWinner()== -1){
-                game.switchToNextActiveCar();
-            }
+        //set MoveStrategy
+        for(int index =0 ; index < game.getCarsList().size();index++){
+            int currentCar = game.getCurrentCarIndex();
+            display.currentTurn(game.getCarId(currentCar),game.getCarVelocity(currentCar));
+            game.getCarsList().get(currentCar).setMoveStrategy(display.retrieveMoveStrategy());
+            game.switchToNextActiveCar();
         }
     }
 }
