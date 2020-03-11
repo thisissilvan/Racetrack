@@ -10,8 +10,12 @@ import java.io.FileNotFoundException;
  * could be replaced with a java-fx class.
  */
 public class Runner {
-    Display display = new Display();
+    Display display;
     Game game;
+
+    public Runner(){
+        display = new Display();
+    }
 
     public void run() {
         //Initialise Game with choosen track
