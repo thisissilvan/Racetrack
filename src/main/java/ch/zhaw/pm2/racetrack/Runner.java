@@ -37,5 +37,16 @@ public class Runner {
             game.getCarsList().get(currentCar).setMoveStrategy(display.retrieveMoveStrategy());
             game.switchToNextActiveCar();
         }
+
+        //turn
+        boolean running = true;
+        while (game.getWinner()== -1 ) {
+            int currentCar = game.getCurrentCarIndex();
+            display.currentTurn(game.getCarId(currentCar),game.getCarVelocity(currentCar));
+            game.doCarTurn(game.getCarsList().get(currentCar).getMoveStrategy().nextMove());
+            if(game.getWinner()== -1){
+                game.switchToNextActiveCar();
+            }
+        }
     }
 }
