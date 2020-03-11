@@ -31,8 +31,19 @@ public class Display {
     }
 
     public File readInputFile(){
-        String trackFileName = textIO.newStringInputReader().read();
-        return new File(config.getTrackDirectory(), trackFileName);
+        File newFile=null;
+        try {
+            String trackFileName = textIO.newStringInputReader().read();
+            newFile = new File(config.getTrackDirectory(), trackFileName);
+            for(int index = 0; index < config.getTrackDirectory().list().length;index++){
+                if(!Arrays.asList(config.getTrackDirectory().list()).get(index).equals(newFile.toString())){
+                    throw new IllegalArgumentException();
+                }
+            }
+        }catch (IllegalArgumentException e){
+            terminal.println("Please enter the name of a valid track");
+        }
+        return newFile;
     }
 
     public void currentTurn(char id, PositionVector velocity) {
