@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
  * It receives a display-instance of the game-launcher which is responsible for the text-output and
  * could be replaced with a java-fx class.
  */
-public class Runner {
+public class Runner implements Game.CarCrashListener {
     Display display;
     Game game;
 
@@ -21,7 +21,7 @@ public class Runner {
         //Initialise Game with choosen track
         display.welcomeMesseage();
         try {
-            game = new Game(new Track(display.readInputFile()));
+            game = new Game(new Track(display.readInputFile()), this);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (InvalidTrackFormatException e) {
@@ -37,5 +37,10 @@ public class Runner {
                 game.switchToNextActiveCar();
             }
         }
+    }
+
+    @Override
+    public void onCarCrash() {
+        //todo call display for notification
     }
 }

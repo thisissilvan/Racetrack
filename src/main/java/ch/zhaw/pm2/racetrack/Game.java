@@ -10,19 +10,26 @@ import static ch.zhaw.pm2.racetrack.PositionVector.*;
  * and if we have a winner.
  */
 public class Game {
+
+    public interface CarCrashListener {
+        public void onCarCrash();
+    }
+
     public static final int NO_WINNER = -1;
     private int WINNER = NO_WINNER;
     private int currentCar;
     private Track track;
     private PositionVector positionVector;
+    private CarCrashListener carCrashListener;
 
     /**
      * Game controller class, receives a track when initialised.
      *
      * @param track which is used for the game
      */
-    public Game(Track track) {
+    public Game(Track track, CarCrashListener carCrashListener) {
         this.track = track;
+        this.carCrashListener = carCrashListener;
     }
     
     /**
