@@ -47,7 +47,7 @@ public class Display {
         return acceleration;
     }
 
-    public MoveStrategy moveStrategyMessage(){
+    public MoveStrategy retrieveMoveStrategy(){
         terminal.println("Please choose a strategy.");
         return null;
     }
