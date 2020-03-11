@@ -7,6 +7,7 @@ import org.beryx.textio.TextTerminal;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Objects;
 
 
 public class Display {
@@ -21,10 +22,12 @@ public class Display {
         config = new Config();
     }
 
-    public File welcomeMesseage() {
-
+    public void welcomeMesseage() {
         terminal.println("Welcome to Racetrack! \nPlease choose one of the following tracks:");
-        terminal.println(Arrays.asList(config.getTrackDirectory().list()));
+        terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
+    }
+
+    public File readInputFile(){
         String trackFileName = textIO.newStringInputReader().read();
         return new File(config.getTrackDirectory(), trackFileName);
     }

@@ -15,8 +15,9 @@ public class Runner {
 
     public void run() {
         //Initialise Game with choosen track
+        display.welcomeMesseage();
         try {
-            game = new Game(new Track(display.welcomeMesseage()));
+            game = new Game(new Track(display.readInputFile()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (InvalidTrackFormatException e) {
