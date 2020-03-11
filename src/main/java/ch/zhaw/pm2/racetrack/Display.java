@@ -11,18 +11,25 @@ import java.util.Arrays;
 
 public class Display {
 
-    TextIO textIO = TextIoFactory.getTextIO();
-    TextTerminal<?> terminal = textIO.getTextTerminal();
-    Config config = new Config();
+    TextIO textIO;
+    TextTerminal<?> terminal;
+    Config config;
+
+    public Display() {
+        textIO = TextIoFactory.getTextIO();
+        terminal = textIO.getTextTerminal();
+        config = new Config();
+    }
 
     public File welcomeMesseage() {
+
         terminal.println("Welcome to Racetrack! \nPlease choose one of the following tracks:");
         terminal.println(Arrays.asList(config.getTrackDirectory().list()));
         String trackFileName = textIO.newStringInputReader().read();
         return new File(config.getTrackDirectory(), trackFileName);
     }
 
-    public void currentTurn(char id, PositionVector velocity){
+    public void currentTurn(char id, PositionVector velocity) {
         terminal.println("Current player " + id);
         terminal.println("Current velocity " + velocity);
     }
