@@ -1,30 +1,38 @@
 package ch.zhaw.pm2.racetrack;
 
-import static ch.zhaw.pm2.racetrack.PositionVector.*;
-import java.io.File;
-import java.io.ObjectInputFilter;
-import java.util.Arrays;
-
 import ch.zhaw.pm2.racetrack.strategy.MoveStrategy;
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 import org.beryx.textio.TextTerminal;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.Objects;
+
 
 public class Display {
 
-    TextIO textIO = TextIoFactory.getTextIO();
-    TextTerminal<?> terminal = textIO.getTextTerminal();
-    Config config = new Config();
+    TextIO textIO;
+    TextTerminal<?> terminal;
+    Config config;
 
-    public File gameInit() {
-        terminal.println("Welcome to Racetrack! \nPlease choose one of the following tracks:");
-        terminal.println(Arrays.asList(config.getTrackDirectory().list()));
-        String trackFileName = textIO.newStringInputReader().read();
-        return new File(config.getTrackDirectory(),trackFileName);
+    public Display() {
+        textIO = TextIoFactory.getTextIO();
+        terminal = textIO.getTextTerminal();
+        config = new Config();
     }
 
-    public void currentTurn(char id, PositionVector velocity){
+    public void welcomeMesseage() {
+        terminal.println("Welcome to Racetrack! \nPlease choose one of the following tracks:");
+        terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
+    }
+
+    public File readInputFile(){
+        String trackFileName = textIO.newStringInputReader().read();
+        return new File(config.getTrackDirectory(), trackFileName);
+    }
+
+    public void currentTurn(char id, PositionVector velocity) {
         terminal.println("Current player " + id);
         terminal.println("Current velocity " + velocity);
     }
@@ -39,11 +47,11 @@ public class Display {
         return acceleration;
     }
 
-    public MoveStrategy moveStrategyMessage(){
-        //ToDo Which Strategy the player chooses
+    public MoveStrategy retrieveMoveStrategy(){
+        terminal.println("Please choose a strategy.");
         return null;
     }
     public void winnerMessage(char winner){
-        //ToDo Silvan
+        terminal.println("Congratulations, the winner is " + winner + " .");
     }
 }
