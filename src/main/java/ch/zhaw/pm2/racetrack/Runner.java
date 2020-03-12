@@ -30,6 +30,7 @@ public class Runner implements Game.CarCrashListener {
         } catch (InvalidTrackFormatException e) {
             e.printStackTrace();
         }
+        display.printGrid(game.getGrid());
         //set MoveStrategy
         for(int index =0 ; index < game.getCarsList().size();index++){
             int currentCar = game.getCurrentCarIndex();

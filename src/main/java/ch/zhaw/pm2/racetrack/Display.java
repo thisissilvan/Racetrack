@@ -11,6 +11,7 @@ import org.beryx.textio.TextTerminal;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.*;
 
 
 public class Display {
@@ -100,5 +101,9 @@ public class Display {
 
     public void carCrashedMessage(){
         terminal.println("Your car crashed!");
+    }
+
+    public void printGrid(String grid){
+        terminal.println(grid);
     }
 }

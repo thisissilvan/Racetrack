@@ -237,5 +237,9 @@ public class Game {
         return (collisionWithWall(carIndex, position) || collisionWithOtherCars(carIndex, position));
     }
 
+    public String getGrid(){
+        return track.toString();
+    }
+
 
 }
