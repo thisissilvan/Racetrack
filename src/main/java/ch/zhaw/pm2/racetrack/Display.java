@@ -26,7 +26,7 @@ public class Display {
     }
 
     public void welcomeMessage() {
-        terminal.println("Welcome to Racetrack! \nPlease choose one of the following tracks:");
+        terminal.println("Welcome to Racetrack! \n\nPlease choose one of the following tracks:");
         terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
     }
 
@@ -47,17 +47,14 @@ public class Display {
     }
 
     public void currentTurn(char id, PositionVector velocity) {
+        terminal.println("-------------------------------------------------------------");
         terminal.println("Current player " + id);
         terminal.println("Current velocity " + velocity);
     }
 
     public PositionVector.Direction userMovement(){
-        terminal.println("Change velocity to one of the following: ");
-        String format = "%-13s%s%n";
-        terminal.printf(format,"DOWN_LEFT", "UP_LEFT", "LEFT");
-        terminal.printf(format,"DOWN", "UP", "NONE");
-        terminal.printf(format,"DOWN_RIGHT", "UP_RIGHT", "RIGHT");
-        PositionVector.Direction acceleration = textIO.newEnumInputReader(PositionVector.Direction.class).read("What would you like to choose?");
+        terminal.println("\nChange velocity to one of the following: ");
+        PositionVector.Direction acceleration = textIO.newEnumInputReader(PositionVector.Direction.class).read();
         return acceleration;
     }
 
@@ -87,5 +84,9 @@ public class Display {
 
     public void winnerMessage(char winner){
         terminal.println("Congratulations, the winner is " + winner + " .");
+    }
+
+    public void carCrashedMessage(char id){
+        terminal.println("Your car crashed: " + id + " !");
     }
 }
