@@ -37,7 +37,6 @@ public class Runner implements Game.CarCrashListener {
             game.getCarsList().get(currentCar).setMoveStrategy(display.retrieveMoveStrategy());
             game.switchToNextActiveCar();
         }
-
         //turn
         boolean running = true;
         while (game.getWinner()== -1 ) {
@@ -54,6 +53,6 @@ public class Runner implements Game.CarCrashListener {
 
     @Override
     public void onCarCrash() {
-        //todo call display for notification
+        display.carCrashedMessage();
     }
 }
