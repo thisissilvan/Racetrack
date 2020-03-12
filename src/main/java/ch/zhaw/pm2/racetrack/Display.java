@@ -86,7 +86,7 @@ public class Display {
         terminal.println("Congratulations, the winner is " + winner + " .");
     }
 
-    public void carCrashedMessage(char id){
-        terminal.println("Your car crashed: " + id + " !");
+    public void carCrashedMessage(){
+        terminal.println("Your car crashed!");
     }
 }
