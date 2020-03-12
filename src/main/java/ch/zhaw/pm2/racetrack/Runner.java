@@ -1,6 +1,8 @@
 package ch.zhaw.pm2.racetrack;
 
 import ch.zhaw.pm2.racetrack.exception.InvalidTrackFormatException;
+import ch.zhaw.pm2.racetrack.strategy.DoNotMove;
+import ch.zhaw.pm2.racetrack.strategy.MoveStrategy;
 
 import java.io.FileNotFoundException;
 
@@ -9,7 +11,7 @@ import java.io.FileNotFoundException;
  * It receives a display-instance of the game-launcher which is responsible for the text-output and
  * could be replaced with a java-fx class.
  */
-public class Runner {
+public class Runner implements Game.CarCrashListener {
     Display display;
     Game game;
 
@@ -18,24 +20,40 @@ public class Runner {
     }
 
     public void run() {
-        //Initialise Game with choosen track
-        display.welcomeMesseage();
+        //Initialise Game with chosen track
+
+        display.welcomeMessage();
         try {
-            game = new Game(new Track(display.readInputFile()));
+            game = new Game(new Track(display.readInputFile()), this);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (InvalidTrackFormatException e) {
             e.printStackTrace();
         }
-
+        display.printGrid(game.getGrid());
+        //set MoveStrategy
+        for(int index =0 ; index < game.getCarsList().size();index++){
+            int currentCar = game.getCurrentCarIndex();
+            display.currentTurn(game.getCarId(currentCar),game.getCarVelocity(currentCar));
+            game.getCarsList().get(currentCar).setMoveStrategy(display.retrieveMoveStrategy());
+            game.switchToNextActiveCar();
+        }
         //turn
-        int currentCar = game.getCurrentCarIndex();
         boolean running = true;
-        while (game.getWinner()== -1 && running) {
-            // game.doCarTurn(display.currentTurn();
+        while (game.getWinner()== -1 ) {
+            int currentCar = game.getCurrentCarIndex();
+            display.currentTurn(game.getCarId(currentCar),game.getCarVelocity(currentCar));
+            game.doCarTurn(game.getCarsList().get(currentCar).getMoveStrategy().nextMove());
             if(game.getWinner()== -1){
                 game.switchToNextActiveCar();
+            }else{
+                display.winnerMessage(game.getCarId(currentCar));
             }
         }
+    }
+
+    @Override
+    public void onCarCrash() {
+        display.carCrashedMessage();
     }
 }
