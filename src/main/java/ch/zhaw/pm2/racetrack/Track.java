@@ -62,6 +62,8 @@ public class Track {
     private int width = -1;
     private int height = -1;
     private List<Car> cars;
+    private Map<Character, List<PositionVector>> paths;
+    private Map<Character, char[][]> pathGrids;
 
     /**
      * Initialize a Track from the given track file.
@@ -74,9 +76,12 @@ public class Track {
     {
         this.grid = new ArrayList<>();
         this.cars = new ArrayList<>();
+        this.paths = new HashMap<>();
+        this.pathGrids = new HashMap<>();
 
         try {
             readTrackFile(trackFile);
+            checkPathFiles(trackFile);
         } catch (IOException e) {
             FileNotFoundException newException = new FileNotFoundException();
             newException.addSuppressed(e);
@@ -100,6 +105,36 @@ public class Track {
             throw new InvalidTrackFormatException("Track without grid is invalid.");
         }
         this.height = lineIndex;
+    }
+
+    private void checkPathFiles(File trackFile) throws IOException, InvalidTrackFormatException {
+        for (File possiblePathFile : trackFile.getParentFile().listFiles()) {
+            String fileName = possiblePathFile.getName();
+            String[] fileNameParts = fileName.split(".");
+            if (fileNameParts.length > 1 && fileName.startsWith(fileNameParts[0]) && fileName.contains("_path_")) {
+                String[] nameAndPath = fileNameParts[0].split("_path_");
+                if (nameAndPath.length == 2) {
+                    readPath(nameAndPath[1], possiblePathFile);
+                }
+            }
+        }
+    }
+
+    private void readPath(String pathName, File file) throws IOException, InvalidTrackFormatException {
+        if (pathName.length() != 1) {
+            throw new IllegalArgumentException("Pathname must be one character");
+        }
+        char pathChar = pathName.charAt(0);
+        this.pathGrids.put(pathChar, new char[this.width][this.height]);
+        BufferedReader reader = Files.newBufferedReader(Paths.get(file.getPath()));
+        String line;
+        int lineIndex = 0;
+        while ((line = reader.readLine()) != null) {
+            if (line.length() > 0) {
+                this.processPathLine(pathChar, line, lineIndex);
+                lineIndex++;
+            }
+        }
     }
 
     public Config.SpaceType getSpaceType(PositionVector position) {
@@ -150,6 +185,13 @@ public class Track {
             }
         }
         return lineOfSpaces;
+    }
+
+    private void processPathLine(char pathName, String line, int lineIndex) {
+        for (int charIndex = 0; charIndex < line.length(); charIndex++) {
+            char c = line.charAt(charIndex);
+            this.pathGrids.get(pathName)[charIndex][lineIndex] = c;
+        }
     }
 
     private void addCarToGrid(int yPosition, int xPosition, char c) throws InvalidTrackFormatException {
