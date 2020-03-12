@@ -15,10 +15,12 @@ public class TrackTest {
     private static final int POSITION_FINISH_RIGHT = 22 * 64 + 22;
 
     private String testTrackDirectory;
+    private File trackDirectory;
 
     public TrackTest() {
         Config config = new Config();
         this.testTrackDirectory = config.getTestTrackDirectoryPath();
+        this.trackDirectory = config.getTrackDirectory();
     }
 
     /**
@@ -87,6 +89,22 @@ public class TrackTest {
                 InvalidTrackFormatException.class,
                 () -> new Track(new File(this.testTrackDirectory + "empty-track.txt"))
         );
+    }
+
+    /**
+     * This test only demonstrates how the path is stored inside the track-object.
+     * For usage in game-logic, it should be analyzed ordered step by step inside a list...
+     */
+    @Test
+    void pathTest() throws FileNotFoundException, InvalidTrackFormatException {
+        Track trackWithPath = new Track(new File(this.trackDirectory.getPath() + "/challenge.txt"));
+        char[][] pathGrid = trackWithPath.getPathGrids().get('a');
+        for (int y = 0; y < pathGrid.length; y++) {
+            for (int x = 0; x < pathGrid[y].length; x++) {
+                System.out.print(pathGrid[y][x]);
+            }
+            System.out.println();
+        }
     }
 
 }

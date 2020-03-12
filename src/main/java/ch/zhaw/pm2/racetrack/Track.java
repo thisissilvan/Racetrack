@@ -110,7 +110,7 @@ public class Track {
     private void checkPathFiles(File trackFile) throws IOException, InvalidTrackFormatException {
         for (File possiblePathFile : trackFile.getParentFile().listFiles()) {
             String fileName = possiblePathFile.getName();
-            String[] fileNameParts = fileName.split(".");
+            String[] fileNameParts = fileName.split("[.]");
             if (fileNameParts.length > 1 && fileName.startsWith(fileNameParts[0]) && fileName.contains("_path_")) {
                 String[] nameAndPath = fileNameParts[0].split("_path_");
                 if (nameAndPath.length == 2) {
@@ -125,7 +125,8 @@ public class Track {
             throw new IllegalArgumentException("Pathname must be one character");
         }
         char pathChar = pathName.charAt(0);
-        this.pathGrids.put(pathChar, new char[this.width][this.height]);
+        System.out.println("pathChar: " + pathChar);
+        this.pathGrids.put(pathChar, new char[this.height][this.width]);
         BufferedReader reader = Files.newBufferedReader(Paths.get(file.getPath()));
         String line;
         int lineIndex = 0;
@@ -188,9 +189,9 @@ public class Track {
     }
 
     private void processPathLine(char pathName, String line, int lineIndex) {
-        for (int charIndex = 0; charIndex < line.length(); charIndex++) {
+        for (int charIndex = 0; charIndex < line.length() && lineIndex <= this.height; charIndex++) {
             char c = line.charAt(charIndex);
-            this.pathGrids.get(pathName)[charIndex][lineIndex] = c;
+            this.pathGrids.get(pathName)[lineIndex][charIndex] = c;
         }
     }
 
@@ -237,8 +238,9 @@ public class Track {
         return stringBuilder.toString();
     }
 
-
-
+    public Map<Character, char[][]> getPathGrids() {
+        return pathGrids;
+    }
 
     public PositionVector getCarPos(int id){ return cars.get(id).getPosition(); }
 
