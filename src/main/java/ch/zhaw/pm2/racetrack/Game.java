@@ -10,19 +10,26 @@ import static ch.zhaw.pm2.racetrack.PositionVector.*;
  * and if we have a winner.
  */
 public class Game {
+
+    public interface CarCrashListener {
+        public void onCarCrash();
+    }
+
     public static final int NO_WINNER = -1;
+    private int WINNER = NO_WINNER;
     private int currentCar;
     private Track track;
     private PositionVector positionVector;
-    //private Direction direction;
+    private CarCrashListener carCrashListener;
 
     /**
      * Game controller class, receives a track when initialised.
      *
      * @param track which is used for the game
      */
-    public Game(Track track) {
+    public Game(Track track, CarCrashListener carCrashListener) {
         this.track = track;
+        this.carCrashListener = carCrashListener;
     }
     
     /**
@@ -63,15 +70,17 @@ public class Game {
     }
 
     /**
+     * Get all the cars from the game.
+     * @return A List containing all cars
+     */
+    public List <Car> getCarsList() { return track.getCars(); }
+
+    /**
      * Return the winner of the game. If the game is still in progress, returns NO_WINNER.
      * @return The winning car's index (zero-based, see getCurrentCar()), or NO_WINNER if the game is still in progress
      */
     public int getWinner() {
-        int winner=NO_WINNER;
-        if(track.getCars().size()==1){
-            winner =currentCar;
-        }
-        return winner;
+        return WINNER;
     }
 
     /**
@@ -100,26 +109,57 @@ public class Game {
      * @param acceleration A Direction containing the current cars acceleration vector (-1,0,1) in x and y direction
      *                     for this turn
      */
-    //posToBeChecked = pos + (v + a)
-    public PositionVector posToBeChecked(Direction acceleration) {
+    //posToBeChecked = curr_pos + (v + a)
+    private PositionVector posToBeChecked(Direction acceleration) {
         return add(getCarPosition(getCurrentCarIndex()), add(getCarVelocity(getCurrentCarIndex()), acceleration.vector));
+    }
+
+    //checks after crash if only one car remaining -> this will be the winner
+    private void remainingCarCheck() {
+        int count = 0;
+        for (int i = 0; i < track.getCarCount(); i++) {
+            if (!track.getCars().get(i).isCrashed()) {
+                count++;
+                WINNER = i;
+            }
+        }
+        if (count != 1) {
+            WINNER = NO_WINNER;
+        }
+    }
+
+    //checks after new acceleration and new position, if car reaches/crosses winning line
+    private void carCrossesLineCheck(Direction acceleration) {
+        List<PositionVector> pathList = new ArrayList<>();
+        pathList = calculatePath(getCarPosition(currentCar), posToBeChecked(acceleration));
+        int x1 = getCarPosition(currentCar).getX();
+        int y1 = getCarPosition(currentCar).getY();
+        int x2 = posToBeChecked(acceleration).getX();
+        int y2 = posToBeChecked(acceleration).getY();
+        for (int i = 0; i < pathList.size(); i++) {
+            if (track.getSpaceType(pathList.get(i)) != Config.SpaceType.TRACK
+                    && (    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_UP && x1 >= x2) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_DOWN && x2 >= x1) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_RIGHT && y2 >= y1) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_LEFT && y1 >= y2))
+            ) {
+                WINNER = currentCar;
+                break;
+            }
+        }
     }
 
     public void doCarTurn(Direction acceleration){
         if(willCarCrash(getCurrentCarIndex(), posToBeChecked(acceleration))){
             track.setCarIsCrashed(getCurrentCarIndex());
-            //TODO:check if only one car remaining -> winner car
-        }
-        //TODO: else if (carWins) { }
-        else{
+            remainingCarCheck();
+        } else{
             track.getCars().get(getCurrentCarIndex()).accelerate(acceleration); //velocity update
             track.getCars().get(getCurrentCarIndex()).move(); //pos update
+            //check if this car crosses winning line
+            carCrossesLineCheck(acceleration);
         }
-    }
-
-    //todo
-    public boolean gameIsWon(){
-        return track.getCars().size() == 0;
+        //TODO: Check how to set end of game if winner determined
     }
 
     /**
@@ -132,7 +172,6 @@ public class Game {
         } while (track.getCars().get(nextCar).isCrashed());
         currentCar = nextCar;
     }
-
 
     /**
      * Returns all of the grid positions in the path between two positions, for use in determining line of sight.
@@ -166,12 +205,22 @@ public class Game {
         return pathList;
     }
 
-    private boolean collisionWithOtherCars(int id, PositionVector position){
-        List<PositionVector> pathList = new ArrayList<>();
-        pathList = calculatePath(getCarPosition(id), position);
+    private boolean collisionWithOtherCars(int carIndex, PositionVector position){
+        List<PositionVector> pathList = calculatePath(getCarPosition(carIndex), position);
         boolean collision = false;
         for (int i = 0; i < track.getCars().size(); i++) {
             if (pathList.contains(track.getCarPos(i))){
+                collision = true;
+            }
+        }
+        return collision;
+    }
+
+    private boolean collisionWithWall(int carIndex, PositionVector position){
+        List<PositionVector> pathList = calculatePath(getCarPosition(carIndex), position);
+        boolean collision = false;
+        for (int i = 0; i < pathList.size(); i++) {
+            if (track.getSpaceType(pathList.get(i)) == (Config.SpaceType.WALL)) {
                 collision = true;
             }
         }
@@ -185,7 +234,11 @@ public class Game {
      * @return A boolean indicator if the car would crash with a WALL or another car.
      */
     public boolean willCarCrash(int carIndex, PositionVector position) {
-        return (track.getSpaceType(add(track.getCarPos(carIndex), position)) == (Config.SpaceType.WALL) || collisionWithOtherCars(carIndex, position));
+        return (collisionWithWall(carIndex, position) || collisionWithOtherCars(carIndex, position));
+    }
+
+    public String getGrid(){
+        return track.toString();
     }
 
 
