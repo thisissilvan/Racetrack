@@ -198,7 +198,7 @@ public class Track {
 
 
 
-    public PositionVector getCarPos(int id){ return null; }
+    public PositionVector getCarPos(int id){ return cars.get(id).getPosition(); }
 
 
     public void setCarIsCrashed(int id) {
