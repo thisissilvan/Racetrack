@@ -187,6 +187,38 @@ public class Game {
      */
     public List<PositionVector> calculatePath(PositionVector startPosition, PositionVector endPosition) {
         List<PositionVector> pathList = new ArrayList<>();
+        int x1 = startPosition.getX(), y1 = startPosition.getY();
+        int x2 = endPosition.getX(), y2 = endPosition.getY();
+        int dX = x2-x1, dY = y2-y1;
+        int distX = Math.abs(dX), distY = Math.abs(dY);
+        int dirX = Integer.signum(dX), dirY = Integer.signum(dY);
+        int parallelX = 0, parallelY = dirY;
+        int dSlow = distX, dFast = distY;
+        int diagonalX = dirX, diagonalY = dirY;
+        if (distX > distY) {
+            parallelX = dirX; parallelY = 0;
+            dSlow = distY;
+            dFast = distX;
+        }
+        int slopeError = dFast/2;
+        pathList.add(new PositionVector(x1, y1));
+        for (int i = 0; i < dFast; i++) {
+            slopeError -= dSlow;
+            if (slopeError < 0) {
+                slopeError += dFast;
+                x1 += diagonalX;
+                y1 += diagonalY;
+            } else {
+                x1 += parallelX;
+                y1 += parallelY;
+            }
+            pathList.add(new PositionVector(x1, y1));
+        }
+        return pathList;
+    }
+
+    /*public List<PositionVector> calculatePath(PositionVector startPosition, PositionVector endPosition) {
+        List<PositionVector> pathList = new ArrayList<>();
         int x1 = startPosition.getX();
         int y1 = startPosition.getY();
         int x2 = endPosition.getX();
@@ -204,7 +236,7 @@ public class Game {
         }
         return pathList;
     }
-
+*/
     private boolean collisionWithOtherCars(int carIndex, PositionVector position){
         List<PositionVector> pathList = calculatePath(getCarPosition(carIndex), position);
         int count = 0;
