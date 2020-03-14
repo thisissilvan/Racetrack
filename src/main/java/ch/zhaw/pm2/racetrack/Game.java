@@ -150,12 +150,12 @@ public class Game {
     }
 
     public void doCarTurn(Direction acceleration){
-        if(willCarCrash(getCurrentCarIndex(), posToBeChecked(acceleration))){
-            track.setCarIsCrashed(getCurrentCarIndex());
+        if(willCarCrash(currentCar, posToBeChecked(acceleration))){
+            track.setCarIsCrashed(currentCar);
             remainingCarCheck();
         } else{
-            track.getCars().get(getCurrentCarIndex()).accelerate(acceleration); //velocity update
-            track.getCars().get(getCurrentCarIndex()).move(); //pos update
+            track.getCars().get(currentCar).accelerate(acceleration); //velocity update
+            track.getCars().get(currentCar).move(); //pos update
             //check if this car crosses winning line
             carCrossesLineCheck(acceleration);
         }
