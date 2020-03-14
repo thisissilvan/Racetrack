@@ -207,17 +207,13 @@ public class Game {
 
     private boolean collisionWithOtherCars(int carIndex, PositionVector position){
         List<PositionVector> pathList = calculatePath(getCarPosition(carIndex), position);
-        boolean collision = false;
         int count = 0;
         for (int i = 0; i < track.getCars().size(); i++) {
             if (pathList.contains(track.getCarPos(i))){
                 count++;
             }
         }
-        if (count==2) {
-            collision = true;
-        }
-        return collision;
+        return count == 2;
     }
 
     private boolean collisionWithWall(int carIndex, PositionVector position){
