@@ -111,7 +111,7 @@ public class Game {
      */
     //posToBeChecked = curr_pos + (v + a)
     private PositionVector posToBeChecked(Direction acceleration) {
-        return add(getCarPosition(getCurrentCarIndex()), add(getCarVelocity(getCurrentCarIndex()), acceleration.vector));
+        return add(getCarPosition(currentCar), add(getCarVelocity(currentCar), acceleration.vector));
     }
 
     //checks after crash if only one car remaining -> this will be the winner
