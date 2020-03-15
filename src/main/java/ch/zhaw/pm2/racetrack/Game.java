@@ -16,7 +16,7 @@ public class Game {
     }
 
     public static final int NO_WINNER = -1;
-    private int WINNER = NO_WINNER;
+    private int winner = NO_WINNER;
     private int currentCar;
     private Track track;
     private PositionVector positionVector;
@@ -80,7 +80,7 @@ public class Game {
      * @return The winning car's index (zero-based, see getCurrentCar()), or NO_WINNER if the game is still in progress
      */
     public int getWinner() {
-        return WINNER;
+        return this.winner;
     }
 
     /**
@@ -120,11 +120,11 @@ public class Game {
         for (int i = 0; i < track.getCarCount(); i++) {
             if (!track.getCars().get(i).isCrashed()) {
                 count++;
-                WINNER = i;
+                this.winner = i;
             }
         }
         if (count != 1) {
-            WINNER = NO_WINNER;
+            this.winner = NO_WINNER;
         }
     }
 
@@ -143,7 +143,7 @@ public class Game {
                     (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_RIGHT && y2 >= y1) ||
                     (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_LEFT && y1 >= y2))
             ) {
-                WINNER = currentCar;
+                this.winner = currentCar;
                 break;
             }
         }
