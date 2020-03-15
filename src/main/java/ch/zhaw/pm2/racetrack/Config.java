@@ -9,7 +9,7 @@ public class Config {
 
     // Directory containing the track files
     private File trackDirectory = new File("tracks");
-    private String testTrackDirectoryPath = "tracks/tests/";
+    private String testTrackDirectoryPath = "test-tracks/";
 
     public enum StrategyType {
         DO_NOT_MOVE, USER, MOVE_LIST
