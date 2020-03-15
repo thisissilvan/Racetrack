@@ -44,6 +44,7 @@ public class Runner implements Game.CarCrashListener {
             int currentCar = game.getCurrentCarIndex();
             display.currentTurn(game.getCarId(currentCar),game.getCarVelocity(currentCar));
             game.doCarTurn(game.getCarsList().get(currentCar).getMoveStrategy().nextMove());
+            display.printGrid(game.getGrid());
             if(game.getWinner()== -1){
                 game.switchToNextActiveCar();
             }else{
