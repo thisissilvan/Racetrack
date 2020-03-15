@@ -130,7 +130,7 @@ public class Game {
 
     //checks after new acceleration and new position, if car reaches/crosses winning line
     private void carCrossesLineCheck(Direction acceleration) {
-        List<PositionVector> pathList = new ArrayList<>();
+        List<PositionVector> pathList;
         pathList = calculatePath(getCarPosition(currentCar), posToBeChecked(acceleration));
         int x1 = getCarPosition(currentCar).getX();
         int y1 = getCarPosition(currentCar).getY();

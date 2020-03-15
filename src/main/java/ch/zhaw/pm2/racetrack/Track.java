@@ -103,7 +103,7 @@ public class Track {
     }
 
     public Config.SpaceType getSpaceType(PositionVector position) {
-        return this.grid.get(position.getY())[position.getY()];
+        return this.grid.get(position.getY())[position.getX()];
     }
 
     public int getCarCount() {
