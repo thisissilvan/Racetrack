@@ -136,7 +136,7 @@ public class Game {
         int y1 = getCarPosition(currentCar).getY();
         int x2 = posToBeChecked(acceleration).getX();
         int y2 = posToBeChecked(acceleration).getY();
-        for (int i = 1; i < pathList.size(); i++) {
+        for (int i = 0; i < pathList.size(); i++) {
             if (track.getSpaceType(pathList.get(i)) != Config.SpaceType.TRACK
                     && (    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_UP && x1 >= x2) ||
                     (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_DOWN && x2 >= x1) ||
