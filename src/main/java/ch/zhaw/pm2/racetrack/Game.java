@@ -2,8 +2,6 @@ package ch.zhaw.pm2.racetrack;
 
 import java.util.*;
 
-import static ch.zhaw.pm2.racetrack.PositionVector.*;
-
 /**
  * Game controller class, performing all actions to modify the game state.
  * It contains the logic to move the cars, detect if they are crashed
@@ -110,8 +108,8 @@ public class Game {
      *                     for this turn
      */
     //posToBeChecked = curr_pos + (v + a)
-    private PositionVector posToBeChecked(Direction acceleration) {
-        return add(getCarPosition(currentCar), add(getCarVelocity(currentCar), acceleration.vector));
+    private PositionVector posToBeChecked(PositionVector.Direction acceleration) {
+        return PositionVector.add(getCarPosition(currentCar), PositionVector.add(getCarVelocity(currentCar), acceleration.vector));
     }
 
     //checks after crash if only one car remaining -> this will be the winner
@@ -129,7 +127,7 @@ public class Game {
     }
 
     //checks after new acceleration and new position, if car reaches/crosses winning line
-    private void carCrossesLineCheck(Direction acceleration) {
+    private void carCrossesLineCheck(PositionVector.Direction acceleration) {
         List<PositionVector> pathList = new ArrayList<>();
         pathList = calculatePath(getCarPosition(currentCar), posToBeChecked(acceleration));
         int x1 = getCarPosition(currentCar).getX();
@@ -138,10 +136,10 @@ public class Game {
         int y2 = posToBeChecked(acceleration).getY();
         for (int i = 0; i < pathList.size(); i++) {
             if (track.getSpaceType(pathList.get(i)) != Config.SpaceType.TRACK
-                    && (    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_UP && x1 >= x2) ||
-                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_DOWN && x2 >= x1) ||
-                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_RIGHT && y2 >= y1) ||
-                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_LEFT && y1 >= y2))
+                    && (    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_UP && y1 >= y2) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_DOWN && y2 >= y1) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_RIGHT && x2 >= x1) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_LEFT && x1 >= x2))
             ) {
                 WINNER = currentCar;
                 break;
@@ -149,7 +147,7 @@ public class Game {
         }
     }
 
-    public void doCarTurn(Direction acceleration){
+    public void doCarTurn(PositionVector.Direction acceleration){
         if(willCarCrash(currentCar, posToBeChecked(acceleration))){
             track.setCarIsCrashed(currentCar);
             remainingCarCheck();
