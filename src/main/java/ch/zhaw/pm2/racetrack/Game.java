@@ -225,7 +225,7 @@ public class Game {
                 count++;
             }
         }
-        return count == 2;
+        return count >= 2;
     }
 
     private boolean collisionWithWall(int carIndex, PositionVector position){
