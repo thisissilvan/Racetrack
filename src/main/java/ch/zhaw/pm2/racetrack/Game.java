@@ -111,7 +111,7 @@ public class Game {
      */
     //posToBeChecked = curr_pos + (v + a)
     private PositionVector posToBeChecked(Direction acceleration) {
-        return add(getCarPosition(getCurrentCarIndex()), add(getCarVelocity(getCurrentCarIndex()), acceleration.vector));
+        return add(getCarPosition(currentCar), add(getCarVelocity(currentCar), acceleration.vector));
     }
 
     //checks after crash if only one car remaining -> this will be the winner
@@ -150,12 +150,12 @@ public class Game {
     }
 
     public void doCarTurn(Direction acceleration){
-        if(willCarCrash(getCurrentCarIndex(), posToBeChecked(acceleration))){
-            track.setCarIsCrashed(getCurrentCarIndex());
+        if(willCarCrash(currentCar, posToBeChecked(acceleration))){
+            track.setCarIsCrashed(currentCar);
             remainingCarCheck();
         } else{
-            track.getCars().get(getCurrentCarIndex()).accelerate(acceleration); //velocity update
-            track.getCars().get(getCurrentCarIndex()).move(); //pos update
+            track.getCars().get(currentCar).accelerate(acceleration); //velocity update
+            track.getCars().get(currentCar).move(); //pos update
             //check if this car crosses winning line
             carCrossesLineCheck(acceleration);
         }
@@ -187,33 +187,45 @@ public class Game {
      */
     public List<PositionVector> calculatePath(PositionVector startPosition, PositionVector endPosition) {
         List<PositionVector> pathList = new ArrayList<>();
-        int x1 = startPosition.getX();
-        int y1 = startPosition.getY();
-        int x2 = endPosition.getX();
-        int y2 = endPosition.getY();
-        int newSlope = 2*(y2-y1);
-        int newSlopeError = newSlope - (x2-x1);
-
-        for (int x = x1, y = y1; x <= x2; x++) {
-            pathList.add(new PositionVector(x, y));
-            newSlopeError += newSlope;
-            if (newSlopeError >= 0) {
-                y++;
-                newSlopeError -= 2*(x2-x1);
+        int x1 = startPosition.getX(), y1 = startPosition.getY();
+        int x2 = endPosition.getX(), y2 = endPosition.getY();
+        int dX = x2-x1, dY = y2-y1;
+        int distX = Math.abs(dX), distY = Math.abs(dY);
+        int dirX = Integer.signum(dX), dirY = Integer.signum(dY);
+        int parallelX = 0, parallelY = dirY;
+        int dSlow = distX, dFast = distY;
+        int diagonalX = dirX, diagonalY = dirY;
+        if (distX > distY) {
+            parallelX = dirX; parallelY = 0;
+            dSlow = distY;
+            dFast = distX;
+        }
+        int slopeError = dFast/2;
+        pathList.add(new PositionVector(x1, y1));
+        for (int i = 0; i < dFast; i++) {
+            slopeError -= dSlow;
+            if (slopeError < 0) {
+                slopeError += dFast;
+                x1 += diagonalX;
+                y1 += diagonalY;
+            } else {
+                x1 += parallelX;
+                y1 += parallelY;
             }
+            pathList.add(new PositionVector(x1, y1));
         }
         return pathList;
     }
 
     private boolean collisionWithOtherCars(int carIndex, PositionVector position){
         List<PositionVector> pathList = calculatePath(getCarPosition(carIndex), position);
-        boolean collision = false;
+        int count = 0;
         for (int i = 0; i < track.getCars().size(); i++) {
             if (pathList.contains(track.getCarPos(i))){
-                collision = true;
+                count++;
             }
         }
-        return collision;
+        return count >= 2;
     }
 
     private boolean collisionWithWall(int carIndex, PositionVector position){
