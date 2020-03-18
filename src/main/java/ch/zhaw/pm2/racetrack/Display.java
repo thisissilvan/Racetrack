@@ -31,6 +31,13 @@ public class Display {
         terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
     }
 
+    public int numberOfPlayers() {
+        terminal.println("How many players will play this game?\n\nEnter a number from 2 - 9:");
+        if (textIO.newIntInputReader().read() >= 2 || textIO.newIntInputReader().read() <= 9) {
+        }
+        return textIO.newIntInputReader().read();
+    }
+
     public boolean playANewGame() {
         boolean playANewGame = false;
         terminal.println("Would you like to play another round? \n\n (y/n)");
