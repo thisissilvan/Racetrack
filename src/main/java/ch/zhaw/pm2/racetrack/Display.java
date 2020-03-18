@@ -27,8 +27,10 @@ public class Display {
     }
 
     public void welcomeMessage() {
-        terminal.println("Welcome to Racetrack! \n\nPlease choose one of the following tracks:");
+        terminal.println("Welcome to Racetrack! \n\nPlease choose one of the following tracks:\n\n");
         terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
+        terminal.println("\n\n If you want to close the application now, you can type in exit.");
+
     }
 
     public int numberOfPlayers() {
@@ -45,13 +47,7 @@ public class Display {
         if (newGame.equalsIgnoreCase("y")) {
             playANewGame = true;
         } else if (newGame.equalsIgnoreCase("n")){
-            terminal.println("Thank you for playing racetrack today. The Application closes in 5 seconds. Goodbye.");
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                System.out.println(e.toString());
-            }
-            System.exit(0);
+            exitApplication();
         } else {
             terminal.println("Entry not known, please specify. \n\n (y/n)");
             playANewGame();
@@ -71,7 +67,10 @@ public class Display {
                         valid=true;
                     }
                 }
-                if(!valid){
+                if (trackFileName.equalsIgnoreCase("exit")) {
+                    exitApplication();
+                }
+                else if(!valid){
                     throw new  IllegalArgumentException();
                 }
             } catch (IllegalArgumentException e) {
@@ -134,5 +133,15 @@ public class Display {
 
     public void printGrid(String grid){
         terminal.println(grid);
+    }
+
+    private void exitApplication() {
+        terminal.println("Thank you for playing racetrack today. The Application closes in 5 seconds. Goodbye.");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            System.out.println(e.toString());
+        }
+        System.exit(0);
     }
 }
