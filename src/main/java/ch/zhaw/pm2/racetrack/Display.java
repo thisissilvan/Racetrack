@@ -31,6 +31,27 @@ public class Display {
         terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
     }
 
+    public boolean playANewGame() {
+        boolean playANewGame = false;
+        terminal.println("Would you like to play another round? \n\n (y/n)");
+        String newGame = textIO.newStringInputReader().read();
+        if (newGame.equalsIgnoreCase("y")) {
+            playANewGame = true;
+        } else if (newGame.equalsIgnoreCase("n")){
+            terminal.println("Thank you for playing racetrack today. The Application closes in 5 seconds. Goodbye.");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                System.out.println(e.toString());
+            }
+            System.exit(0);
+        } else {
+            terminal.println("Entry not known, please specify. \n\n (y/n)");
+            playANewGame();
+        }
+        return playANewGame;
+    }
+
     public File readInputFile(){
         File newFile=null;
         boolean valid=false;
@@ -48,6 +69,7 @@ public class Display {
                 }
             } catch (IllegalArgumentException e) {
                 terminal.println("Please enter the name of a valid track");
+
             }
         }
         return newFile;
