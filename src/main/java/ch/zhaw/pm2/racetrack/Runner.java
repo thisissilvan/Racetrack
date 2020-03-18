@@ -21,7 +21,7 @@ public class Runner implements Game.CarCrashListener {
 
     public void run() {
         //Initialise Game with chosen track
-        int currentCar = 0;
+
         display.welcomeMessage();
         try {
             game = new Game(new Track(display.readInputFile()), this);
@@ -29,27 +29,28 @@ public class Runner implements Game.CarCrashListener {
             e.printStackTrace();
         }
         display.printGrid(game.getGrid());
-
+        //set MoveStrategy
+        for (int index = 0; index < game.getCarsList().size(); index++) {
+            int currentCar = game.getCurrentCarIndex();
+            display.currentTurn(game.getCarId(currentCar), game.getCarVelocity(currentCar));
+            game.getCarsList().get(currentCar).setMoveStrategy(display.retrieveMoveStrategy());
+            game.switchToNextActiveCar();
+        }
+        //turn
+        boolean running = true;
         while (game.getWinner() == -1) {
-            for (int index = 0; index < game.getCarsList().size(); index++) {
-                currentCar = game.getCurrentCarIndex();
-                display.currentTurn(game.getCarId(currentCar), game.getCarVelocity(currentCar));
-                game.getCarsList().get(currentCar).setMoveStrategy(display.retrieveMoveStrategy());
-                game.doCarTurn(game.getCarsList().get(currentCar).getMoveStrategy().nextMove());
-
-                display.printGrid(game.getGrid());
-
-                if (game.getWinner() == -1) {
-                    game.switchToNextActiveCar();
-                } else {
-                    display.winnerMessage(game.getCarId(currentCar));
-                    if (display.playANewGame() == true) {
-                        run();
-                    }
+            int currentCar = game.getCurrentCarIndex();
+            display.currentTurn(game.getCarId(currentCar), game.getCarVelocity(currentCar));
+            game.doCarTurn(game.getCarsList().get(currentCar).getMoveStrategy().nextMove());
+            display.printGrid(game.getGrid());
+            if (game.getWinner() == -1) {
+                game.switchToNextActiveCar();
+            } else {
+                display.winnerMessage(game.getCarId(currentCar));
+                if (display.playANewGame()) {
+                    run();
                 }
             }
-
-
         }
     }
 
