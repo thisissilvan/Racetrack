@@ -15,7 +15,7 @@ public class Runner implements Game.CarCrashListener {
     Display display;
     Game game;
 
-    public Runner(){
+    public Runner() {
         display = new Display();
     }
 
@@ -26,35 +26,38 @@ public class Runner implements Game.CarCrashListener {
         try {
             game = new Game(new Track(display.readInputFile()), this);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            display.fileNotFoundMesseage();
         } catch (InvalidTrackFormatException e) {
-            e.printStackTrace();
+            display.invalidTrackMesseage();
         }
         display.printGrid(game.getGrid());
         //set MoveStrategy
-        for(int index =0 ; index < game.getCarsList().size();index++){
+        for (int index = 0; index < game.getCarsList().size(); index++) {
             int currentCar = game.getCurrentCarIndex();
-            display.currentTurn(game.getCarId(currentCar),game.getCarVelocity(currentCar));
+            display.currentTurn(game.getCarId(currentCar), game.getCarVelocity(currentCar));
             game.getCarsList().get(currentCar).setMoveStrategy(display.retrieveMoveStrategy());
             game.switchToNextActiveCar();
         }
         //turn
         boolean running = true;
-        while (game.getWinner()== -1 ) {
+        while (game.getWinner() == -1) {
             int currentCar = game.getCurrentCarIndex();
-            display.currentTurn(game.getCarId(currentCar),game.getCarVelocity(currentCar));
+            display.currentTurn(game.getCarId(currentCar), game.getCarVelocity(currentCar));
             game.doCarTurn(game.getCarsList().get(currentCar).getMoveStrategy().nextMove());
             display.printGrid(game.getGrid());
-            if(game.getWinner()== -1){
+            if (game.getWinner() == -1) {
                 game.switchToNextActiveCar();
-            }else{
+            } else {
                 display.winnerMessage(game.getCarId(currentCar));
+                if (display.playANewGame()) {
+                    run();
+                }
             }
         }
     }
 
     @Override
     public void onCarCrash() {
-        display.carCrashedMessage();
+
     }
 }

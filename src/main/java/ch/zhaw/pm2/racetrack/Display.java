@@ -27,8 +27,25 @@ public class Display {
     }
 
     public void welcomeMessage() {
-        terminal.println("Welcome to Racetrack! \n\nPlease choose one of the following tracks:");
+        terminal.println("Welcome to Racetrack! \n\nPlease choose one of the following tracks:\n\n");
         terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
+        terminal.println("\n\n If you want to close the application now, you can type in exit.");
+
+    }
+
+    public boolean playANewGame() {
+        boolean playANewGame = false;
+        terminal.println("Would you like to play another round? \n\n (y/n)");
+        String newGame = textIO.newStringInputReader().read();
+        if (newGame.equalsIgnoreCase("y")) {
+            playANewGame = true;
+        } else if (newGame.equalsIgnoreCase("n")){
+            exitApplication();
+        } else {
+            terminal.println("Entry not known, please specify. \n\n (y/n)");
+            playANewGame();
+        }
+        return playANewGame;
     }
 
     public File readInputFile(){
@@ -43,11 +60,15 @@ public class Display {
                         valid=true;
                     }
                 }
-                if(!valid){
+                if (trackFileName.equalsIgnoreCase("exit")) {
+                    exitApplication();
+                }
+                else if(!valid){
                     throw new  IllegalArgumentException();
                 }
             } catch (IllegalArgumentException e) {
                 terminal.println("Please enter the name of a valid track");
+
             }
         }
         return newFile;
@@ -105,5 +126,23 @@ public class Display {
 
     public void printGrid(String grid){
         terminal.println(grid);
+    }
+
+    public void fileNotFoundMesseage() {
+        terminal.println("The document is not found, please provide a valid document.");
+    }
+
+    public void invalidTrackMesseage() {
+        terminal.println("This Track does not exist, please provide a valid Track.");
+    }
+
+    private void exitApplication() {
+        terminal.println("Thank you for playing racetrack today. The Application closes in 5 seconds. Goodbye.");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            System.out.println(e.toString());
+        }
+        System.exit(0);
     }
 }
