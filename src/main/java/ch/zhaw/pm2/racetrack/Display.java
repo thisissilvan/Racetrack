@@ -30,7 +30,6 @@ public class Display {
         terminal.println("Welcome to Racetrack! \n\nPlease choose one of the following tracks:\n\n");
         terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
         terminal.println("\n\n If you want to close the application now, you can type in exit.");
-
     }
 
     public boolean playANewGame() {

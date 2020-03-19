@@ -40,6 +40,7 @@ public class Runner implements Game.CarCrashListener {
         }
         //turn
         boolean running = true;
+        display.printGrid(game.getGrid());
         while (game.getWinner() == -1) {
             int currentCar = game.getCurrentCarIndex();
             display.currentTurn(game.getCarId(currentCar), game.getCarVelocity(currentCar));
