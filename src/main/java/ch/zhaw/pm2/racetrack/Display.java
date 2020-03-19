@@ -135,6 +135,14 @@ public class Display {
         terminal.println(grid);
     }
 
+    public void fileNotFoundMesseage() {
+        terminal.println("The document is not found, please provide a valid document.");
+    }
+
+    public void invalidTrackMesseage() {
+        terminal.println("This Track does not exist, please provide a valid Track.");
+    }
+
     private void exitApplication() {
         terminal.println("Thank you for playing racetrack today. The Application closes in 5 seconds. Goodbye.");
         try {
