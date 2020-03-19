@@ -8,9 +8,6 @@ import ch.zhaw.pm2.racetrack.PositionVector;
  */
 
 public class DoNotMove implements MoveStrategy {
-
-
-
     /**
      * The car never moves. It's Direction is NONE which equals (0,0)
      * @return always returns NONE
