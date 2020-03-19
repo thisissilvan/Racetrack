@@ -19,15 +19,11 @@ public class Runner implements Game.CarCrashListener {
         display = new Display();
     }
 
-    public void run() {
+    public void run() throws FileNotFoundException, InvalidTrackFormatException {
         //Initialise Game with chosen track
 
         display.welcomeMessage();
-        try {
-            game = new Game(new Track(display.readInputFile()), this);
-        } catch (FileNotFoundException | InvalidTrackFormatException e) {
-            e.printStackTrace();
-        }
+        game = new Game(new Track(display.readInputFile()), this);
         display.printGrid(game.getGrid());
         //set MoveStrategy
         for (int index = 0; index < game.getCarsList().size(); index++) {
