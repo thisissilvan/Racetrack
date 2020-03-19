@@ -92,24 +92,23 @@ public class Display {
         terminal.printf(format,"1", "DoNotMove");
         terminal.printf(format,"2", "UserMovement");
         terminal.printf(format,"3", "MoveList");
-        int number = textIO.newIntInputReader().read();
         boolean valid=false;
         while(!valid) {
-            try {
-                if (number == 1) {
+            int number = textIO.newIntInputReader().read();
+            valid = true;
+            switch (number) {
+                case 1:
                     strategy = new DoNotMove();
-                    valid = true;
-                } else if (number == 2) {
+                    break;
+                case 2:
                     strategy = new UserMovement();
-                    valid = true;
-                } else if (number == 3) {
-                    //strategy = new MoveList();
-                    valid = true;
-                } else {
-                    throw new IllegalArgumentException();
-                }
-            } catch (IllegalArgumentException e) {
-                terminal.println("Please enter a value between 1 - 3");
+                    break;
+                case 3:
+                    //MoveList to be implemented
+                    break;
+                default:
+                    valid = false;
+                    terminal.println("Please enter a value between 1 - 3");
             }
         }
         return strategy;
