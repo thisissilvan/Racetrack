@@ -48,7 +48,7 @@ public class Runner implements Game.CarCrashListener {
             if (game.getWinner() == -1) {
                 game.switchToNextActiveCar();
             } else {
-                display.winnerMessage(game.getCarId(currentCar));
+                display.winnerMessage(game.getCarId(game.getWinner()));
                 if (display.playANewGame()) {
                     run();
                 }
