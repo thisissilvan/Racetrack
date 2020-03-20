@@ -137,11 +137,12 @@ public class Game {
         int x2 = posToBeChecked(acceleration).getX();
         int y2 = posToBeChecked(acceleration).getY();
         for (int i = 0; i < pathList.size(); i++) {
-            if (track.getSpaceType(pathList.get(i)) != Config.SpaceType.TRACK
-                    && (    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_UP && x1 >= x2) ||
-                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_DOWN && x2 >= x1) ||
-                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_RIGHT && y2 >= y1) ||
-                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_LEFT && y1 >= y2))
+            if ((track.getSpaceType(pathList.get(i)) != Config.SpaceType.TRACK &&
+                    track.getSpaceType(pathList.get(i)) != Config.SpaceType.WALL)&&
+                    ((track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_UP && y1 >= y2) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_DOWN && y2 >= y1) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_RIGHT && x2 >= x1) ||
+                    (track.getSpaceType(pathList.get(i)) == Config.SpaceType.FINISH_LEFT && x1 >= x2))
             ) {
                 this.winner = currentCar;
                 break;
