@@ -29,7 +29,7 @@ public class Display {
     public void welcomeMessage() {
         terminal.println("Welcome to Racetrack! \n\nPlease choose one of the following tracks:\n\n");
         terminal.println(Arrays.asList(Objects.requireNonNull(config.getTrackDirectory().list())));
-        terminal.println("\n\n If you want to close the application now, you can type in exit.");
+        terminal.println("\n\n If you want to close the application now, you can type in exit.\n");
 
     }
 
@@ -67,7 +67,7 @@ public class Display {
                     throw new  IllegalArgumentException();
                 }
             } catch (IllegalArgumentException e) {
-                terminal.println("Please enter the name of a valid track");
+                terminal.println("Please enter the name of a valid track\n");
 
             }
         }
@@ -110,18 +110,18 @@ public class Display {
                     throw new IllegalArgumentException();
                 }
             } catch (IllegalArgumentException e) {
-                terminal.println("Please enter a value between 1 - 3");
+                terminal.println("Please enter a value between 1 - 3\n");
             }
         }
         return strategy;
     }
 
     public void winnerMessage(char winner){
-        terminal.println("Congratulations, the winner is " + winner + " .");
+        terminal.println("Congratulations, the winner is " + winner + " .\n");
     }
 
     public void carCrashedMessage(){
-        terminal.println("Your car crashed!");
+        terminal.println("Your car crashed!\n");
     }
 
     public void printGrid(String grid){
@@ -129,11 +129,11 @@ public class Display {
     }
 
     public void fileNotFoundMesseage() {
-        terminal.println("The document is not found, please provide a valid document.");
+        terminal.println("The file was not found, please provide a valid file.\n");
     }
 
     public void invalidTrackMesseage() {
-        terminal.println("This Track does not exist, please provide a valid Track.");
+        terminal.println("This Track does not exist, please provide a valid Track.\n");
     }
 
     private void exitApplication() {
